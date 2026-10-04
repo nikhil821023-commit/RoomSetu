@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RoomSetu — Live Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="stage">
+  <div class="panel">
+    <button class="eyebrow" onclick="toggleApiConfig()">Live Prototype — API Connected</button>
+    <h1>Find out who<br>you're <em>moving in</em><br>with.</h1>
+    <p class="lede">This build talks to a real RoomSetu backend — auth, matching, and household tools are live, not mocked.</p>
+
+    <div class="api-config" id="api-config" style="display:none;">
+      <label>Backend API base URL</label>
+      <input type="text" id="api-base-input" placeholder="http://localhost:8080/api" />
+      <div class="status">
+        <span class="dot" id="api-status-dot"></span>
+        <span id="api-status-text">Not checked yet</span>
+      </div>
+      <button class="btn-primary" style="margin-top:12px;" onclick="saveApiBase()">Save & test connection</button>
+    </div>
+  </div>
+
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="status-bar"><span>9:41</span><span>RoomSetu</span></div>
+      <div id="toast"></div>
+
+      <!-- LOADING -->
+      <div class="view active" id="view-loading">
+        <div class="loading-screen"><div class="spinner"></div><p>Connecting to RoomSetu...</p></div>
+      </div>
+
+      <!-- AUTH: PHONE -->
+      <div class="view" id="view-auth-phone">
+        <div class="auth-view">
+          <div class="auth-eyebrow">Log in or sign up</div>
+          <h2>What's your number?</h2>
+          <p class="hint">We'll text you a one-time code — no passwords to remember.</p>
+          <div class="field">
+            <label>Phone number</label>
+            <div class="phone-prefix">
+              <span>+91</span>
+              <input type="tel" id="phone-input" maxlength="10" placeholder="98765 43210" inputmode="numeric">
+            </div>
+          </div>
+          <div class="ob-nav" style="padding-top:6px; flex-direction:column; gap:10px;">
+            <button class="btn-primary" id="request-otp-btn" onclick="requestOtp(false)">Log in →</button>
+            <button class="btn-link" onclick="requestOtp(true)">New here? Create an account</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- AUTH: OTP -->
+      <div class="view" id="view-auth-otp">
+        <div class="auth-view">
+          <div class="auth-eyebrow">Step 2 of 2</div>
+          <h2>Enter the code</h2>
+          <p class="hint">Sent to <span id="otp-phone-display"></span>.</p>
+          <div class="otp-boxes">
+            <input type="text" maxlength="1" class="otp-digit">
+            <input type="text" maxlength="1" class="otp-digit">
+            <input type="text" maxlength="1" class="otp-digit">
+            <input type="text" maxlength="1" class="otp-digit">
+            <input type="text" maxlength="1" class="otp-digit">
+            <input type="text" maxlength="1" class="otp-digit">
+          </div>
+          <div id="signup-fields" style="display:none;">
+            <div class="field" style="margin-top:18px;">
+              <label>Your name</label>
+              <input type="text" id="signup-name" placeholder="Ananya Rao">
+            </div>
+            <div class="field">
+              <label>I am a...</label>
+              <select id="signup-role">
+                <option value="SEEKER">Seeker — looking for a room/flatmate</option>
+                <option value="HOST">Host — have a place to fill</option>
+              </select>
+            </div>
+          </div>
+          <div class="ob-nav" style="padding-top:6px;">
+            <button class="btn-primary" id="verify-otp-btn" onclick="verifyOtp()">Verify & continue →</button>
+          </div>
+          <button class="btn-link" onclick="showScreen('view-auth-phone')">← Use a different number</button>
+        </div>
+      </div>
+
+      <!-- ONBOARDING -->
+      <div class="view" id="view-onboarding">
+        <div class="ob-progress"><span class="done"></span><span data-p="2"></span><span data-p="3"></span></div>
+
+        <div class="ob-step active" data-step="1">
+          <div class="auth-eyebrow">Your compatibility profile</div>
+          <h2 class="ob-heading">Budget & locality</h2>
+          <div class="field"><label>Locality</label><input type="text" id="ob-locality" placeholder="HSR Layout, Bengaluru"></div>
+          <div class="field"><label>Budget range (₹/month)</label>
+            <div style="display:flex; gap:10px;">
+              <input type="number" id="ob-budget-min" placeholder="Min · 8000">
+              <input type="number" id="ob-budget-max" placeholder="Max · 15000">
+            </div>
+          </div>
+          <div class="ob-nav"><button class="btn-primary" onclick="obNext(2)">Continue →</button></div>
+        </div>
+
+        <div class="ob-step" data-step="2">
+          <h2 class="ob-heading">Your daily rhythm</h2>
+          <div class="pd-section-label" style="margin-top:0;">Sleep schedule</div>
+          <div class="opt-grid" data-field="sleepSchedule">
+            <div class="opt-chip" data-value="BEFORE_11PM">Before 11pm</div>
+            <div class="opt-chip" data-value="ELEVEN_TO_1AM">11pm–1am</div>
+            <div class="opt-chip" data-value="AFTER_1AM">After 1am</div>
+          </div>
+          <div class="pd-section-label">Work-from-home</div>
+          <div class="opt-grid" data-field="workFromHome">
+            <div class="opt-chip" data-value="ALWAYS">Always</div>
+            <div class="opt-chip" data-value="SOMETIMES">Sometimes</div>
+            <div class="opt-chip" data-value="RARELY">Rarely</div>
+          </div>
+          <div class="ob-nav"><button class="btn-ghost" onclick="obNext(1)">Back</button><button class="btn-primary" onclick="obNext(3)">Continue →</button></div>
+        </div>
+
+        <div class="ob-step" data-step="3">
+          <h2 class="ob-heading">Home environment</h2>
+          <div class="pd-section-label" style="margin-top:0;">Food preference</div>
+          <div class="opt-grid" data-field="foodPreference">
+            <div class="opt-chip" data-value="VEGETARIAN">Vegetarian</div>
+            <div class="opt-chip" data-value="NON_VEGETARIAN">Non-vegetarian</div>
+            <div class="opt-chip" data-value="EGGETARIAN">Eggetarian</div>
+          </div>
+          <div class="pd-section-label">Cleanliness</div>
+          <div class="opt-grid" data-field="cleanliness">
+            <div class="opt-chip" data-value="RELAXED">Relaxed</div>
+            <div class="opt-chip" data-value="TIDY_WEEKLY">Tidy weekly</div>
+            <div class="opt-chip" data-value="VERY_PARTICULAR">Very particular</div>
+          </div>
+          <div class="ob-nav"><button class="btn-ghost" onclick="obNext(2)">Back</button><button class="btn-primary" id="ob-submit-btn" onclick="submitProfile()">Enter RoomSetu →</button></div>
+        </div>
+      </div>
+
+      <!-- DISCOVER -->
+      <div class="view" id="view-discover">
+        <div class="app-header">
+          <div class="logo"><span class="dot"></span>RoomSetu</div>
+          <button class="icon-btn" onclick="discoverMode === 'listings' ? loadListings() : loadDiscover()">↻</button>
+        </div>
+        <div class="sub-nav">
+          <button class="sub-pill on" id="pill-people" onclick="switchDiscoverMode('people')">Roommates</button>
+          <button class="sub-pill" id="pill-listings" onclick="switchDiscoverMode('listings')">Listings</button>
+        </div>
+        <div class="view-body" id="discover-list">
+          <div class="loading-screen"><div class="spinner"></div><p>Loading matches...</p></div>
+        </div>
+      </div>
+
+      <!-- MATCHES -->
+      <div class="view" id="view-matches">
+        <div class="app-header"><div class="logo"><span class="dot"></span>Matches</div></div>
+        <div id="matches-list"><div class="loading-screen"><div class="spinner"></div><p>Loading...</p></div></div>
+      </div>
+
+      <!-- CHAT -->
+      <div class="view" id="view-chat">
+        <div class="thread-header">
+          <button class="icon-btn" onclick="closeChatScreen()">←</button>
+          <div class="avatar" style="width:38px;height:38px;font-size:14px;border-radius:11px;background:#2F6F6B;" id="chat-partner-avatar">?</div>
+          <div><b id="chat-partner-name">—</b></div>
+        </div>
+        <div class="thread-body" id="thread-body"></div>
+        <div class="thread-input">
+          <input id="chat-input" type="text" placeholder="Message..." onkeydown="if(event.key==='Enter')sendMsg()">
+          <button class="send-btn" onclick="sendMsg()">→</button>
+        </div>
+      </div>
+
+      <!-- MESSAGES INBOX -->
+      <div class="view" id="view-conversations">
+        <div class="thread-header">
+          <button class="icon-btn" onclick="showTab('me')">←</button>
+          <div><b>Messages</b></div>
+        </div>
+        <div id="conversations-list" style="overflow-y:auto; flex:1;">
+          <div class="loading-screen"><div class="spinner"></div><p>Loading...</p></div>
+        </div>
+      </div>
+
+      <!-- HOUSEHOLDS LIST -->
+      <div class="view" id="view-checklist">
+        <div class="app-header"><div class="logo"><span class="dot"></span>Households</div></div>
+        <div id="household-list"><div class="loading-screen"><div class="spinner"></div><p>Loading...</p></div></div>
+      </div>
+
+      <!-- HOUSEHOLD DETAIL -->
+      <div class="view" id="view-household">
+        <div class="thread-header">
+          <button class="icon-btn" onclick="showTab('checklist')">←</button>
+          <div><b id="household-partner-name">—</b><div style="font-size:11.5px;color:var(--teal);font-weight:600;">Move-in tools</div></div>
+        </div>
+        <div style="overflow-y:auto; flex:1;">
+          <div class="card-block" id="expense-balance-card">
+            <h3>Expense balance</h3><p class="sub">Loading...</p>
+          </div>
+          <div class="card-block">
+            <h3>Checklist</h3>
+            <p class="sub">Shared move-in tasks</p>
+            <div id="household-checklist"></div>
+            <div class="add-row">
+              <input type="text" id="new-checklist-item" placeholder="Add a task...">
+              <button onclick="addChecklistItem()">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MY LISTINGS (host) -->
+      <div class="view" id="view-my-listings">
+        <div class="thread-header">
+          <button class="icon-btn" onclick="showTab('me')">←</button>
+          <div><b>My Listings</b></div>
+        </div>
+
+        <div class="settings-row" style="cursor:pointer;" onclick="openConversationsList()">
+  <div class="si">💬</div><b>Messages</b>
+</div>
+
+        <div id="my-listings-list" style="overflow-y:auto; flex:1;">
+          <div class="loading-screen"><div class="spinner"></div><p>Loading...</p></div>
+        </div>
+        <div style="padding:16px 22px;">
+          <button class="btn-primary" onclick="openCreateListingScreen()">+ Add a listing</button>
+        </div>
+      </div>
+
+      <!-- CREATE LISTING (host) -->
+      <div class="view" id="view-create-listing">
+        <div class="thread-header">
+          <button class="icon-btn" onclick="showScreen('view-my-listings')">←</button>
+          <div><b>New Listing</b></div>
+        </div>
+        <div style="overflow-y:auto; flex:1; padding:20px 22px;">
+          <div class="pd-section-label" style="margin-top:0;">Photos</div>
+          <div class="photo-grid" id="cl-photo-grid"></div>
+
+          <div class="field"><label>Locality</label><input type="text" id="cl-locality" placeholder="HSR Layout, Bengaluru"></div>
+          <div class="field">
+            <label>Address</label>
+            <div class="autocomplete-wrap">
+              <input type="text" id="cl-address" placeholder="Start typing your building or street...">
+              <div class="autocomplete-dropdown" id="cl-address-dropdown"></div>
+            </div>
+          </div>
+          <div class="field"><label>Monthly rent (₹)</label><input type="number" id="cl-rent" placeholder="12000"></div>
+          <div class="field"><label>Lease type</label>
+            <select id="cl-lease-type">
+              <option value="FLAT_SHARE">Flat share</option>
+              <option value="PG">PG</option>
+            </select>
+          </div>
+          <div class="field"><label>Available from</label><input type="date" id="cl-available-from"></div>
+          <div class="field"><label>Description</label>
+            <textarea id="cl-description" rows="4" placeholder="Nearby landmarks, what's included, what kind of flatmate you're looking for..." style="width:100%; border:1.5px solid var(--line); border-radius:12px; padding:13px 15px; font-family:inherit; font-size:14px; resize:vertical;"></textarea>
+          </div>
+          <button class="btn-primary" id="create-listing-btn" onclick="createListing()">Publish listing →</button>
+        </div>
+      </div>
+
+      <!-- ID VERIFICATION -->
+      <div class="view" id="view-verification">
+        <div class="thread-header">
+          <button class="icon-btn" onclick="showTab('me')">←</button>
+          <div><b>Verify your identity</b></div>
+        </div>
+        <div style="overflow-y:auto; flex:1; padding:20px 22px;">
+          <p class="hint" style="margin-bottom:22px;">Every profile on RoomSetu is reviewed before it's marked verified — this is what keeps matches and listings trustworthy.</p>
+          <div class="field">
+            <label>Document type</label>
+            <select id="verify-doc-type">
+              <option value="AADHAAR">Aadhaar</option>
+              <option value="COLLEGE_ID">College ID</option>
+              <option value="EMPLOYEE_ID">Employee ID</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Document</label>
+            <input type="file" id="verify-doc-file" accept="image/*,.pdf">
+            <p style="font-size:11.5px; color:var(--ink-soft); margin-top:6px; line-height:1.5;">
+              No real document storage is wired up yet — this submits the flow, not an actual retrievable file.
+            </p>
+          </div>
+          <button class="btn-primary" id="verify-submit-btn" onclick="submitVerification()">Submit for review →</button>
+          <div id="verification-status-box" style="margin-top:22px;"></div>
+        </div>
+      </div>
+
+      <!-- MY DETAILS (view/edit saved profile) -->
+      <div class="view" id="view-my-details">
+        <div class="thread-header">
+          <button class="icon-btn" onclick="showTab('me')">←</button>
+          <div><b>My Details</b></div>
+        </div>
+        <div style="overflow-y:auto; flex:1; padding:20px 22px;" id="my-details-body">
+          <div class="loading-screen"><div class="spinner"></div><p>Loading your profile...</p></div>
+        </div>
+      </div>
+
+      <!-- INQUIRIES (host) -->
+      <div class="view" id="view-inquiries">
+        <div class="thread-header">
+          <button class="icon-btn" onclick="showTab('me')">←</button>
+          <div><b>Inquiries</b></div>
+        </div>
+        <div id="inquiries-list" style="overflow-y:auto; flex:1;">
+          <div class="loading-screen"><div class="spinner"></div><p>Loading...</p></div>
+        </div>
+      </div>
+
+      <!-- ADMIN REVIEW -->
+      <div class="view" id="view-admin">
+        <div class="thread-header">
+          <button class="icon-btn" onclick="showTab('me')">←</button>
+          <div><b>Admin Review</b></div>
+        </div>
+        <div style="overflow-y:auto; flex:1;">
+          <div class="section-title">Pending / flagged listings</div>
+          <div id="admin-listings-list"><p style="padding:0 22px;font-size:12.5px;color:var(--ink-soft);">Loading...</p></div>
+
+          <div class="section-title">Pending ID verifications</div>
+          <div id="admin-verifications-list"><p style="padding:0 22px;font-size:12.5px;color:var(--ink-soft);">Loading...</p></div>
+        </div>
+      </div>
+
+      <!-- ME -->
+      <div class="view" id="view-me">
+        <div class="app-header"><div class="logo"><span class="dot"></span>Profile</div></div>
+        <div class="me-hero">
+          <div class="avatar" id="me-avatar" style="background:#C8811F;">A</div>
+          <h2 id="me-name">—</h2>
+          <p id="me-role" style="font-size:12.5px;color:var(--ink-soft);margin:0;">—</p>
+        </div>
+        <div class="trust-meter">
+          <div class="row"><b style="font-size:13.5px;color:var(--teal);">Trust score</b><span id="trust-score-val" class="mono-val">—</span></div>
+          <div class="trust-track"><i id="trust-track-fill" style="width:0%;"></i></div>
+        </div>
+        <div class="settings-list">
+          <div class="settings-row"><div class="si">🪪</div><b>ID verification</b><span class="tag" id="me-verification-tag">—</span></div>
+          <div class="settings-row" style="cursor:pointer;" onclick="openVerificationScreen()"><div class="si">📤</div><b>Submit ID for verification</b></div>
+          <div class="settings-row" style="cursor:pointer;" onclick="openMyDetails()"><div class="si">📋</div><b>My Details</b></div>
+          <div class="settings-row" style="cursor:pointer;" onclick="openConversationsList()">
+            <div class="si">💬</div><b>Messages</b>
+          </div>
+          <div class="settings-row" id="admin-link-row" style="display:none; cursor:pointer;" onclick="openAdminReview()">
+            <div class="si">🛡️</div><b>Admin Review Queue</b>
+          </div>
+          <div class="settings-row" id="host-links-row" style="display:none; cursor:pointer;" onclick="showTab('mylistings')"><div class="si">🏠</div><b>My Listings</b></div>
+          <div class="settings-row" style="cursor:pointer;" onclick="logout()"><div class="si">🚪</div><b>Log out</b></div>
+        </div>
+      </div>
+
+      <div class="sheet-overlay" id="sheet-overlay" onclick="closeSheet(event)">
+        <div class="sheet" id="sheet">
+          <div class="sheet-handle"></div>
+          <div class="sheet-body" id="sheet-body"></div>
+        </div>
+      </div>
+
+      <div class="bottom-nav" id="bottom-nav" style="display:none;">
+        <button class="nav-btn active" data-tab="discover" onclick="showTab('discover')">Discover</button>
+        <button class="nav-btn" data-tab="matches" onclick="showTab('matches')">Matches <span class="badge" id="incoming-badge" style="display:none;"></span></button>
+        <button class="nav-btn" data-tab="checklist" onclick="showTab('checklist')">Household</button>
+        <button class="nav-btn" data-tab="me" onclick="showTab('me')">Profile</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/state.js"></script>
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/upload.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/discover.js"></script>
+<script src="js/matches.js"></script>
+<script src="js/household.js"></script>
+<script src="js/geocode.js"></script>
+<script src="js/listings.js"></script>
+<script src="js/verification.js"></script>
+<script src="js/mydetails.js"></script>
+<script src="js/main.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/chat.js"></script>
+</body>
+</html>

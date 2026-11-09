@@ -2,13 +2,20 @@ async function api(path, { method = 'GET', body = null, auth = true } = {}) {
   const headers = { 'Content-Type': 'application/json' };
   if (auth && State.token) headers['Authorization'] = 'Bearer ' + State.token;
 
+  // Free hosting sleeps when idle. If a request takes unusually long, say why.
+  const slowTimer = setTimeout(() => {
+    toast('Waking up the server. Free hosting sleeps when idle, this can take up to a minute', '');
+  }, 6000);
+
   let res;
   try {
     res = await fetch(State.apiBase + path, {
       method, headers, body: body ? JSON.stringify(body) : undefined,
     });
   } catch (e) {
-    throw new Error('Could not reach the backend at ' + State.apiBase + ' — is it running, and is CORS configured?');
+    throw new Error('Could not reach the server. Check your connection and try again.');
+  } finally {
+    clearTimeout(slowTimer);
   }
 
   if (!res.ok) {
@@ -20,10 +27,6 @@ async function api(path, { method = 'GET', body = null, auth = true } = {}) {
 
   const text = await res.text();
   if (!text) return null;
-
-  // Some endpoints (like otp/request) return plain text, not JSON — don't
-  // crash on that. Try to parse as JSON; if it's not valid JSON, just
-  // return the raw text as-is instead of throwing.
   try {
     return JSON.parse(text);
   } catch (_) {

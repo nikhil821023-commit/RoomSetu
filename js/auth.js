@@ -1,5 +1,25 @@
 // OTP request/verify + onboarding questionnaire submission.
 
+let resendTimer = null;
+
+function startResendTimer(seconds = 30) {
+  const btn = document.getElementById('resend-otp-btn');
+  let left = seconds;
+  clearInterval(resendTimer);
+  btn.disabled = true;
+  btn.textContent = `Resend code in ${left}s`;
+  resendTimer = setInterval(() => {
+    left--;
+    if (left <= 0) {
+      clearInterval(resendTimer);
+      btn.disabled = false;
+      btn.textContent = 'Resend code';
+    } else {
+      btn.textContent = `Resend code in ${left}s`;
+    }
+  }, 1000);
+}
+
 async function requestOtp(isSignup) {
   const phone = document.getElementById('phone-input').value.trim();
   if (!/^[6-9]\d{9}$/.test(phone)) { toast('Enter a valid 10-digit number', 'error'); return; }
@@ -12,17 +32,28 @@ async function requestOtp(isSignup) {
     await api('/auth/otp/request', { method: 'POST', auth: false, body: { phone } });
     State.pendingPhone = phone;
     document.getElementById('otp-phone-display').textContent = '+91 ' + phone;
-    toast('Code sent — check the backend console if SMS is off', 'success');
+    toast('Code sent to +91 ' + phone, 'success');
 
-    // Only show name/role fields if they told us they're signing up
     document.getElementById('signup-fields').style.display = isSignup ? 'block' : 'none';
 
     showScreen('view-auth-otp');
+    startResendTimer();
     document.querySelector('.otp-digit').focus();
   } catch (e) {
     toast(e.message, 'error');
   } finally {
     btn.disabled = false; btn.innerHTML = 'Log in →';
+  }
+}
+
+async function resendOtp() {
+  if (!State.pendingPhone) return;
+  try {
+    await api('/auth/otp/request', { method: 'POST', auth: false, body: { phone: State.pendingPhone } });
+    toast('New code sent', 'success');
+    startResendTimer();
+  } catch (e) {
+    toast(e.message, 'error');
   }
 }
 
@@ -79,6 +110,7 @@ async function verifyOtp() {
 }
 
 function logout() {
+  stopUnreadPolling();
   localStorage.removeItem('roomsetu_token');
   localStorage.removeItem('roomsetu_user_id');
   localStorage.removeItem('roomsetu_name');
@@ -111,12 +143,27 @@ async function submitProfile() {
   const budgetMin = parseInt(document.getElementById('ob-budget-min').value, 10);
   const budgetMax = parseInt(document.getElementById('ob-budget-max').value, 10);
 
-  if (!locality || !budgetMin || !budgetMax) { toast('Fill in locality and budget range', 'error'); return; }
+  if (!locality || !budgetMin || !budgetMax) {
+    toast('Fill in locality and budget range', 'error');
+    return;
+  }
+
+  const loc = readLocation(document.getElementById('ob-location'), obLocationState);
+  if (!loc.ok) {
+toast('Choose a spot: pick a suggestion or use your current location, or clear the box', 'error');    return;
+  }
 
   const btn = document.getElementById('ob-submit-btn');
   btn.disabled = true; btn.innerHTML = '<div class="spinner"></div>';
   try {
-    await api('/profile', { method: 'PUT', body: { locality, budgetMin, budgetMax, ...State.obAnswers } });
+    await api('/profile', {
+      method: 'PUT',
+      body: {
+        locality, budgetMin, budgetMax,
+        latitude: loc.latitude, longitude: loc.longitude, locationLabel: loc.locationLabel,
+        ...State.obAnswers
+      }
+    });
     toast('Profile complete!', 'success');
     document.getElementById('bottom-nav').style.display = 'flex';
     showTab('discover');

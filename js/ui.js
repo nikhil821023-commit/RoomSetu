@@ -16,6 +16,7 @@ function showScreen(id) {
 }
 
 function showTab(name) {
+  stopUnreadPolling();
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
    if (name === 'mylistings') {
     document.getElementById('view-my-listings').classList.add('active');

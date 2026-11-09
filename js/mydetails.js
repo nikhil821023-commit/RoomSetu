@@ -18,21 +18,51 @@ async function openMyDetails() {
   }
 }
 
+
 function renderMyDetailsForm(profile) {
   currentProfilePhotoUrl = profile.photoUrl || null;
+
+  myDetailsLocation = {
+    lat: profile.latitude ?? null,
+    lng: profile.longitude ?? null,
+    label: profile.locationLabel || '',
+    pin: ''
+  };
+
   const body = document.getElementById('my-details-body');
+
   body.innerHTML = `
-    <div class="profile-photo-picker" id="md-photo-picker" onclick="document.getElementById('md-photo-input').click()">
+    <div class="profile-photo-picker" id="md-photo-picker"
+         onclick="document.getElementById('md-photo-input').click()">
       ${profile.photoUrl ? `<img src="${profile.photoUrl}" />` : '📷'}
-      <input type="file" id="md-photo-input" accept="image/*" style="display:none" onchange="handleProfilePhotoSelect(event)">
+      <input type="file" id="md-photo-input" accept="image/*"
+             style="display:none"
+             onchange="handleProfilePhotoSelect(event)">
     </div>
 
-    <div class="field"><label>Locality</label><input type="text" id="md-locality" value="${escapeHtml(profile.locality || '')}"></div>
-    <div class="field"><label>Budget range (₹/month)</label>
+        <div class="field">
+      <label>Locality</label>
+      <input type="text" id="md-locality"
+             value="${escapeHtml(profile.locality || '')}"
+             placeholder="New Town, Kolkata">
+    </div>
+
+    ${locationFieldHtml('md', profile.locationLabel)}
+
+
+    <div class="field">
+      <label>Budget range (₹/month)</label>
       <div style="display:flex; gap:10px;">
         <input type="number" id="md-budget-min" value="${profile.budgetMin || ''}">
         <input type="number" id="md-budget-max" value="${profile.budgetMax || ''}">
       </div>
+    </div>
+
+    <div class="field">
+      <label>About me (shown on your public profile)</label>
+      <textarea id="md-bio" rows="3" maxlength="500"
+        placeholder="Your work or studies, daily routine, what you want in a flatmate"
+        style="width:100%; border:1.5px solid var(--line); border-radius:12px; padding:13px 15px; font-family:inherit; font-size:14px; resize:vertical;">${escapeHtml(profile.bio || '')}</textarea>
     </div>
 
     <div class="pd-section-label" style="margin-top:6px;">Sleep schedule</div>
@@ -63,18 +93,28 @@ function renderMyDetailsForm(profile) {
       ${optChip('VERY_PARTICULAR', 'Very particular', profile.cleanliness)}
     </div>
 
-    <button class="btn-primary" id="save-details-btn" style="margin-top:10px;" onclick="saveMyDetails()">Save changes →</button>
+    <button class="btn-primary" id="save-details-btn"
+            style="margin-top:10px;" onclick="saveMyDetails()">
+      Save changes →
+    </button>
   `;
+
+  // Mount the location autocomplete AFTER the HTML has been inserted.
+  mountLocationField('md', myDetailsLocation);
 
   body.querySelectorAll('.opt-grid').forEach(grid => {
     grid.addEventListener('click', (e) => {
       const chip = e.target.closest('.opt-chip');
       if (!chip) return;
-      grid.querySelectorAll('.opt-chip').forEach(c => c.classList.remove('selected'));
+
+      grid.querySelectorAll('.opt-chip').forEach(c =>
+        c.classList.remove('selected')
+      );
       chip.classList.add('selected');
     });
   });
 }
+
 
 function optChip(value, label, currentValue) {
   const selected = value === currentValue ? ' selected' : '';
@@ -112,9 +152,16 @@ async function saveMyDetails() {
   });
 
   const btn = document.getElementById('save-details-btn');
+
+  const loc = readLocation(document.getElementById('md-location'), myDetailsLocation);
+  if (!loc.ok) {
+    toast('Choose a spot: pick a suggestion or use your current location, or clear the box', 'error');
+    return;
+  }
   btn.disabled = true; btn.innerHTML = '<div class="spinner"></div>';
   try {
-    await api('/profile', { method: 'PUT', body: { locality, budgetMin, budgetMax, photoUrl: currentProfilePhotoUrl, ...answers } });
+    await api('/profile', { method: 'PUT', body: { locality, budgetMin, budgetMax, photoUrl: currentProfilePhotoUrl,
+        bio: document.getElementById('md-bio').value.trim(), ...answers, latitude: loc.latitude, longitude: loc.longitude, locationLabel: loc.locationLabel } });
     toast('Profile updated!', 'success');
   } catch (e) {
     toast(e.message, 'error');

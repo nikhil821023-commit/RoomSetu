@@ -6,6 +6,7 @@ let createListingPhotoUrls = [];
 let discoverMode = 'people'; // 'people' | 'listings' — toggled by the sub-nav pills
 let listingsCache = [];
 let selectedNearbyCoords = null;
+const browseState = { radiusKm: 25, mine: null };
 
 function switchDiscoverMode(mode) {
   discoverMode = mode;
@@ -17,25 +18,23 @@ function switchDiscoverMode(mode) {
 
 
 
-
 async function loadListings() {
   const container = document.getElementById('discover-list');
   container.innerHTML = `
-    <div style="padding:0 22px 16px;">
+    <div style="padding:0 22px 12px;">
       <div class="field" style="margin-bottom:0;">
-        <label>Search near a location (optional)</label>
+        <label>Search near another place (optional)</label>
         <div style="display:flex; gap:8px;">
           <div class="autocomplete-wrap" style="flex:1;">
-            <input type="text" id="nearby-search-input" placeholder="Start typing an area, landmark, or office...">
+            <input type="text" id="nearby-search-input" placeholder="Area, landmark or office...">
             <div class="autocomplete-dropdown" id="nearby-autocomplete-dropdown"></div>
           </div>
           <button class="btn-primary" style="width:auto; padding:0 18px;" id="nearby-search-btn" disabled>Go</button>
         </div>
       </div>
     </div>
-    <div id="nearby-results">
-      <div class="loading-screen"><div class="spinner"></div><p>Loading listings...</p></div>
-    </div>
+    <div id="distance-bar" style="padding:0 22px 12px;"></div>
+    <div id="nearby-results"><div class="loading-screen"><div class="spinner"></div><p>Loading listings...</p></div></div>
   `;
 
   selectedNearbyCoords = null;
@@ -49,16 +48,62 @@ async function loadListings() {
   );
   document.getElementById('nearby-search-btn').onclick = () => searchNearbyByCoords(selectedNearbyCoords);
 
-  // Default view on load: listings matching the seeker's own saved profile
-  // locality — this is what actually fills #nearby-results the first time.
   try {
     const profile = await api('/profile/me');
-    const results = await api('/listings/public/browse?locality=' + encodeURIComponent(profile.locality));
-    listingsCache = results;
-    renderListingResults(results, 'No listings in your locality yet', 'Try searching a different area above, or check back later.');
+    browseState.mine = (profile.latitude != null && profile.longitude != null)
+      ? { lat: profile.latitude, lng: profile.longitude, label: profile.locationLabel || 'your saved location' }
+      : null;
+
+    if (browseState.mine) {
+      await loadListingsFromMyLocation();
+    } else {
+      // No saved location yet: show listings in the profile's locality and nudge them to add one.
+      document.getElementById('distance-bar').innerHTML = `
+        <div style="background:var(--mist); border-radius:14px; padding:14px 16px;">
+          <b style="font-size:13.5px;">See how far each place is</b>
+          <p style="font-size:12.5px; color:var(--ink-soft); margin:4px 0 10px; line-height:1.5;">Add your office or college and every listing will show its distance from you.</p>
+          <button class="btn-primary" style="padding:10px;" onclick="openMyDetails()">Add my location →</button>
+        </div>`;
+      const results = await api('/listings/public/browse?locality=' + encodeURIComponent(profile.locality));
+      listingsCache = results;
+      renderListingResults(results, 'No listings in your area yet', 'Try searching another place above, or check back later.');
+    }
   } catch (e) {
-    document.getElementById('nearby-results').innerHTML = emptyState('Couldn\'t load listings', e.message);
+    document.getElementById('nearby-results').innerHTML = emptyState("Couldn't load listings", e.message);
   }
+}
+
+function setDistanceBarForMine() {
+  const m = browseState.mine;
+  const options = [[5, 'Within 5 km'], [10, 'Within 10 km'], [25, 'Within 25 km'],
+                   [50, 'Within 50 km'], [100, 'Within 100 km'], [20000, 'Any distance']];
+  document.getElementById('distance-bar').innerHTML = `
+    <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+      <div style="font-size:12px; color:var(--ink-soft); line-height:1.4;">📍 From <b>${escapeHtml(shortLabel(m.label))}</b><br>straight-line distance</div>
+      <select onchange="changeRadius(this.value)" style="border:1.5px solid var(--line); border-radius:10px; padding:8px 10px; font-size:12.5px; background:var(--paper);">
+        ${options.map(([v, label]) => `<option value="${v}" ${v === browseState.radiusKm ? 'selected' : ''}>${label}</option>`).join('')}
+      </select>
+    </div>`;
+}
+
+async function loadListingsFromMyLocation() {
+  const m = browseState.mine;
+  setDistanceBarForMine();
+  const resultsEl = document.getElementById('nearby-results');
+  resultsEl.innerHTML = '<div class="loading-screen"><div class="spinner"></div><p>Loading listings...</p></div>';
+  try {
+    const results = await api(`/listings/public/nearby?lat=${m.lat}&lng=${m.lng}&radiusKm=${browseState.radiusKm}`);
+    listingsCache = results;
+    renderListingResults(results, 'No listings in range',
+      "Try a wider distance. Listings without a map pin can't be placed, so they don't show here.");
+  } catch (e) {
+    resultsEl.innerHTML = emptyState("Couldn't load listings", e.message);
+  }
+}
+
+function changeRadius(value) {
+  browseState.radiusKm = Number(value);
+  loadListingsFromMyLocation();
 }
 
 function renderListingResults(results, emptyTitle, emptyBody) {
@@ -83,6 +128,29 @@ function renderListingResults(results, emptyTitle, emptyBody) {
 }
 
 async function searchNearbyByCoords(coords) {
+  if (!coords) { toast('Pick a place from the suggestions', 'error'); return; }
+
+  document.getElementById('distance-bar').innerHTML = `
+    <div style="font-size:12px; color:var(--ink-soft);">📍 Near <b>${escapeHtml(shortLabel(coords.label))}</b>
+      ${browseState.mine ? ' · <button class="btn-link" style="padding:0; font-size:12px;" onclick="loadListingsFromMyLocation()">Back to my location</button>' : ''}
+    </div>`;
+
+  const resultsEl = document.getElementById('nearby-results');
+  resultsEl.innerHTML = '<div class="loading-screen"><div class="spinner"></div><p>Loading nearby listings...</p></div>';
+  try {
+    const results = await api(`/listings/public/nearby?lat=${coords.lat}&lng=${coords.lng}&radiusKm=${browseState.radiusKm}`);
+    listingsCache = results;
+    renderListingResults(results, 'No listings in range', 'Try a broader area.');
+  } catch (e) {
+    resultsEl.innerHTML = emptyState('Search failed', e.message);
+  }
+}
+
+
+
+
+
+async function searchNearbyByCoords(coords) {
   if (!coords) { toast('Pick a location from the suggestions', 'error'); return; }
 
   const resultsEl = document.getElementById('nearby-results');
@@ -97,45 +165,57 @@ async function searchNearbyByCoords(coords) {
   }
 }
 
-
 async function openListing(listingId) {
   let l = listingsCache.find(x => x.id === listingId);
   if (!l) {
     try { l = await api('/listings/public/' + listingId); }
-    catch (e) { toast('Could not load that listing', 'error'); return; }
+    catch (e) { toast(e.message || 'Could not load that listing', 'error'); return; }
   }
 
-  api(`/listings/${listingId}/view`, { method: 'POST' }).catch(() => {});
+  const isMine = String(l.hostId) === State.userId;
+  if (!isMine) api(`/listings/${listingId}/view`, { method: 'POST' }).catch(() => {});
 
-  const body = document.getElementById('sheet-body');
-  body.innerHTML = `
+  let actions;
+  if (isMine) {
+    actions = `<p style="font-size:12.5px; color:var(--ink-soft); text-align:center; margin:6px 0 14px;">This is your listing, as seekers see it.</p>
+       <div class="pd-cta"><button class="btn-ghost" onclick="closeSheet()" style="width:100%;">Close</button></div>`;
+  } else if (l.filled) {
+    actions = `<p style="font-size:13px; color:var(--ink-soft); text-align:center; margin:6px 0 14px;">This place has been rented out.</p>
+       <div class="pd-cta"><button class="btn-ghost" onclick="closeSheet()" style="width:100%;">Close</button></div>`;
+  } else {
+    actions = `<div class="field">
+         <label>Message to host (optional)</label>
+         <textarea id="inquiry-message" rows="3" placeholder="Hi, is this still available?" style="width:100%; border:1.5px solid var(--line); border-radius:12px; padding:13px 15px; font-family:inherit; font-size:14px; resize:vertical;"></textarea>
+       </div>
+       <div class="pd-cta">
+         <button class="btn-ghost" onclick="closeSheet()" style="flex:0 0 auto;">Close</button>
+         <button class="btn-primary" id="inquire-btn" onclick="sendInquiry(${listingId})">Send inquiry →</button>
+       </div>
+       <button class="btn-link" style="width:100%; color:var(--coral);" onclick="openReportForm('LISTING', ${l.id}, 'this listing')">Report this listing</button>`;
+  }
+
+  document.getElementById('sheet-body').innerHTML = `
     ${l.photoUrls && l.photoUrls.length ? `
-      <div class="listing-photo-gallery">
-        ${l.photoUrls.map(url => `<img src="${url}">`).join('')}
-      </div>
-    ` : ''}
+      <div class="listing-photo-gallery">${l.photoUrls.map(url => `<img src="${url}">`).join('')}</div>` : ''}
     <div class="pd-hero" style="padding-bottom:6px;">
       <div class="lc-rent" style="font-size:28px;">₹${l.rent}<span style="font-size:14px;"> /month</span></div>
-      <div style="font-size:13px;color:var(--ink-soft);margin-top:6px;">📍 ${escapeHtml(l.locality)}</div>
-      <div style="font-size:12.5px;color:var(--ink-soft);margin-top:2px;">${escapeHtml(l.address)}</div>
+      <div style="font-size:13px; color:var(--ink-soft); margin-top:6px;">📍 ${escapeHtml(l.locality)}</div>
+      <div style="font-size:12.5px; color:var(--ink-soft); margin-top:2px;">${escapeHtml(l.address)}</div>
     </div>
     <div class="mc-tags" style="padding:10px 0 16px;">
       <span class="tag">${l.leaseType === 'PG' ? 'PG' : 'Flat share'}</span>
       <span class="tag">Available ${l.availableFrom}</span>
-      <span class="tag">Hosted by ${escapeHtml(l.hostName)}</span>
+      ${l.distanceKm != null ? `<span class="tag">${l.distanceKm} km away</span>` : ''}
+      <span class="tag" style="cursor:pointer;" onclick="openPublicProfile(${l.hostId})">Hosted by ${escapeHtml(l.hostName)} ›</span>
     </div>
-    <div class="field">
-      <label>Message to host (optional)</label>
-      <textarea id="inquiry-message" rows="3" placeholder="Hi, is this still available?" style="width:100%; border:1.5px solid var(--line); border-radius:12px; padding:13px 15px; font-family:inherit; font-size:14px; resize:vertical;"></textarea>
-    </div>
-    <div class="pd-cta">
-      <button class="btn-ghost" onclick="closeSheet()" style="flex:0 0 auto;">Close</button>
-      <button class="btn-primary" id="inquire-btn" onclick="sendInquiry(${listingId})">Send inquiry →</button>
-    </div>
+    ${l.description ? `<p style="font-size:13.5px; line-height:1.6; margin:0 0 16px;">${escapeHtml(l.description)}</p>` : ''}
+    ${featureTagsHtml(l.features)}
+    ${actions}
   `;
   document.getElementById('sheet-overlay').classList.add('active');
   requestAnimationFrame(() => document.getElementById('sheet').classList.add('open'));
-} 
+}
+
 
 
 async function sendInquiry(listingId) {
@@ -146,7 +226,8 @@ async function sendInquiry(listingId) {
     const inquiry = await api(`/listings/${listingId}/inquire`, { method: 'POST', body: { message } });
     toast('Inquiry sent!', 'success');
     closeSheet();
-    setTimeout(() => openConversation(inquiry.hostId, inquiry.hostName, 'discover'), 320);
+    const first = message || "Hi! I'm interested in your listing.";
+    setTimeout(() => openConversation(inquiry.hostId, inquiry.hostName, 'discover', first), 320);
   } catch (e) {
     toast(e.message, 'error');
     btn.disabled = false; btn.innerHTML = 'Send inquiry →';
@@ -165,18 +246,25 @@ async function loadMyListings() {
       container.innerHTML = emptyState('No listings yet', 'Tap "Add a listing" below to list your first room.');
       return;
     }
-    const statusClass = { PENDING: 'pending', VERIFIED: 'verified', FLAGGED: 'flagged', REJECTED: 'flagged' };
-    container.innerHTML = results.map(l => `
-      <div class="lc-my-row">
-        <div class="txt">
-          <b>₹${l.rent}/mo · ${escapeHtml(l.locality)}</b>
-          <div class="sub">${l.leaseType === 'PG' ? 'PG' : 'Flat share'} · Available ${l.availableFrom}</div>
-        </div>
-        <span class="status-pill ${statusClass[l.verificationStatus] || 'pending'}">${l.verificationStatus}</span>
-      </div>
-    `).join('');
+    const pill = {
+      VERIFIED: ['verified', 'Live'],
+      FLAGGED: ['flagged', 'Hidden'],
+      REJECTED: ['flagged', 'Removed'],
+      PENDING: ['pending', 'Pending'],
+    };
+    container.innerHTML = results.map(l => {
+      const [cls, label] = pill[l.verificationStatus] || ['pending', l.verificationStatus];
+      return `
+        <div class="lc-my-row">
+          <div class="txt">
+            <b>₹${l.rent}/mo · ${escapeHtml(l.locality)}</b>
+            <div class="sub">${l.leaseType === 'PG' ? 'PG' : 'Flat share'} · Available ${l.availableFrom}</div>
+          </div>
+          <span class="status-pill ${cls}">${label}</span>
+        </div>`;
+    }).join('');
   } catch (e) {
-    container.innerHTML = emptyState('Couldn\'t load listings', e.message);
+    container.innerHTML = emptyState("Couldn't load listings", e.message);
   }
 }
 
@@ -232,26 +320,34 @@ async function createListing() {
 
 
 
+let inquiriesCache = [];
+
 async function openInquiries() {
   showScreen('view-inquiries');
   const container = document.getElementById('inquiries-list');
   container.innerHTML = '<div class="loading-screen"><div class="spinner"></div><p>Loading...</p></div>';
   try {
     const results = await api('/listings/mine/inquiries');
+    inquiriesCache = results;
     if (!results.length) {
-      container.innerHTML = emptyState('No inquiries yet', 'When someone messages about your listing, it\'ll show up here.');
+      container.innerHTML = emptyState('No inquiries yet', "When someone messages about your listing, it'll show up here.");
       return;
     }
-    container.innerHTML = results.map(i => `
+    container.innerHTML = results.map((i, idx) => `
       <div class="req-row">
-        <div class="avatar" style="width:44px;height:44px;font-size:15px;border-radius:13px;background:${avatarColor(i.inquirerId)}">${i.inquirerName.charAt(0)}</div>
-        <div class="txt">
+        <div class="avatar" style="width:44px;height:44px;font-size:15px;border-radius:13px;background:${avatarColor(i.inquirerId)};cursor:pointer;" onclick="openPublicProfile(${i.inquirerId})">${escapeHtml(i.inquirerName.charAt(0))}</div>
+        <div class="txt" style="cursor:pointer;" onclick="openPublicProfile(${i.inquirerId})">
           <b>${escapeHtml(i.inquirerName)}</b>
           <div class="sub">${i.message ? escapeHtml(i.message) : 'No message'} · ${new Date(i.createdAt).toLocaleDateString()}</div>
         </div>
-      </div>
-    `).join('');
+        <button class="sub-pill on" onclick="replyToInquirer(${idx})">Reply</button>
+      </div>`).join('');
   } catch (e) {
-    container.innerHTML = emptyState('Couldn\'t load inquiries', e.message);
+    container.innerHTML = emptyState("Couldn't load inquiries", e.message);
   }
+}
+
+function replyToInquirer(idx) {
+  const i = inquiriesCache[idx];
+  if (i) openConversation(i.inquirerId, i.inquirerName, 'me');
 }

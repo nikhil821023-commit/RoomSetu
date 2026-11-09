@@ -6,7 +6,7 @@ async function loadMe() {
   document.getElementById('me-avatar').textContent = (State.name || '?').charAt(0);
   document.getElementById('me-avatar').style.background = avatarColor(Number(State.userId) || 0);
   document.getElementById('host-links-row').style.display = State.role === 'HOST' ? 'flex' : 'none';
-  document.getElementById('admin-link-row').style.display = State.admin ? 'flex' : 'none';
+  document.getElementById('messages-badge').style.display = 'none';
   await api('/profile/me'); // throws if not onboarded yet — bootstrap() handles that
 
   // Add inside loadMe(), near the host-links-row line:
@@ -50,5 +50,6 @@ async function bootstrap() {
     showScreen('view-auth-phone');
   }
 }
+initOnboardingLocation();
 
 bootstrap();

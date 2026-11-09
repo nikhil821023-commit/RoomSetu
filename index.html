@@ -2,11 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>RoomSetu — Live Prototype</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#FFFDF9" />
+<meta name="mobile-web-app-capable" content="yes" /><title>RoomSetu — Live Prototype</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/polish.css">
 </head>
 <body>
 
@@ -87,6 +89,7 @@
           </div>
           <div class="ob-nav" style="padding-top:6px;">
             <button class="btn-primary" id="verify-otp-btn" onclick="verifyOtp()">Verify & continue →</button>
+            <button class="btn-link" id="resend-otp-btn" onclick="resendOtp()" disabled>Resend code</button>
           </div>
           <button class="btn-link" onclick="showScreen('view-auth-phone')">← Use a different number</button>
         </div>
@@ -106,6 +109,12 @@
               <input type="number" id="ob-budget-max" placeholder="Max · 15000">
             </div>
           </div>
+
+          <div id="ob-location-field"></div>
+
+
+
+
           <div class="ob-nav"><button class="btn-primary" onclick="obNext(2)">Continue →</button></div>
         </div>
 
@@ -169,9 +178,15 @@
       <div class="view" id="view-chat">
         <div class="thread-header">
           <button class="icon-btn" onclick="closeChatScreen()">←</button>
-          <div class="avatar" style="width:38px;height:38px;font-size:14px;border-radius:11px;background:#2F6F6B;" id="chat-partner-avatar">?</div>
-          <div><b id="chat-partner-name">—</b></div>
-        </div>
+          <div style="display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="openChatPartnerProfile()">
+        <div class="avatar" style="width:38px;height:38px;font-size:14px;border-radius:11px;background:#2F6F6B;" id="chat-partner-avatar">?</div>
+    <div><b id="chat-partner-name">—</b><div style="font-size:11px;color:var(--teal);font-weight:600;">View profile</div></div>
+  </div>
+  <button class="icon-btn" style="margin-left:auto;" title="Delete chat" onclick="deleteCurrentChat()">🗑</button>
+
+
+      
+     </div>
         <div class="thread-body" id="thread-body"></div>
         <div class="thread-input">
           <input id="chat-input" type="text" placeholder="Message..." onkeydown="if(event.key==='Enter')sendMsg()">
@@ -225,9 +240,7 @@
           <div><b>My Listings</b></div>
         </div>
 
-        <div class="settings-row" style="cursor:pointer;" onclick="openConversationsList()">
-  <div class="si">💬</div><b>Messages</b>
-</div>
+        
 
         <div id="my-listings-list" style="overflow-y:auto; flex:1;">
           <div class="loading-screen"><div class="spinner"></div><p>Loading...</p></div>
@@ -241,20 +254,23 @@
       <div class="view" id="view-create-listing">
         <div class="thread-header">
           <button class="icon-btn" onclick="showScreen('view-my-listings')">←</button>
-          <div><b>New Listing</b></div>
+          <div><b id="cl-title">New Listing</b></div>
         </div>
         <div style="overflow-y:auto; flex:1; padding:20px 22px;">
           <div class="pd-section-label" style="margin-top:0;">Photos</div>
           <div class="photo-grid" id="cl-photo-grid"></div>
 
           <div class="field"><label>Locality</label><input type="text" id="cl-locality" placeholder="HSR Layout, Bengaluru"></div>
+
           <div class="field">
-            <label>Address</label>
-            <div class="autocomplete-wrap">
-              <input type="text" id="cl-address" placeholder="Start typing your building or street...">
-              <div class="autocomplete-dropdown" id="cl-address-dropdown"></div>
-            </div>
-          </div>
+  <label>Address</label>
+  <div class="autocomplete-wrap">
+    <input type="text" id="cl-address" placeholder="Start typing your building or street...">
+    <div class="autocomplete-dropdown" id="cl-address-dropdown"></div>
+  </div>
+  <div id="cl-pin-status" style="font-size:12px; font-weight:600; margin-top:8px;"></div>
+</div>
+          
           <div class="field"><label>Monthly rent (₹)</label><input type="number" id="cl-rent" placeholder="12000"></div>
           <div class="field"><label>Lease type</label>
             <select id="cl-lease-type">
@@ -263,40 +279,42 @@
             </select>
           </div>
           <div class="field"><label>Available from</label><input type="date" id="cl-available-from"></div>
+          <div class="pd-section-label" style="margin-top:4px;">Features</div>
+<div class="feat-grid" id="cl-features" style="margin-bottom:18px;"></div>
           <div class="field"><label>Description</label>
             <textarea id="cl-description" rows="4" placeholder="Nearby landmarks, what's included, what kind of flatmate you're looking for..." style="width:100%; border:1.5px solid var(--line); border-radius:12px; padding:13px 15px; font-family:inherit; font-size:14px; resize:vertical;"></textarea>
           </div>
-          <button class="btn-primary" id="create-listing-btn" onclick="createListing()">Publish listing →</button>
+          <button class="btn-primary" id="create-listing-btn" onclick="submitListingForm()">Publish listing →</button>
         </div>
       </div>
 
-      <!-- ID VERIFICATION -->
-      <div class="view" id="view-verification">
-        <div class="thread-header">
-          <button class="icon-btn" onclick="showTab('me')">←</button>
-          <div><b>Verify your identity</b></div>
-        </div>
-        <div style="overflow-y:auto; flex:1; padding:20px 22px;">
-          <p class="hint" style="margin-bottom:22px;">Every profile on RoomSetu is reviewed before it's marked verified — this is what keeps matches and listings trustworthy.</p>
-          <div class="field">
-            <label>Document type</label>
-            <select id="verify-doc-type">
-              <option value="AADHAAR">Aadhaar</option>
-              <option value="COLLEGE_ID">College ID</option>
-              <option value="EMPLOYEE_ID">Employee ID</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Document</label>
-            <input type="file" id="verify-doc-file" accept="image/*,.pdf">
-            <p style="font-size:11.5px; color:var(--ink-soft); margin-top:6px; line-height:1.5;">
-              No real document storage is wired up yet — this submits the flow, not an actual retrievable file.
-            </p>
-          </div>
-          <button class="btn-primary" id="verify-submit-btn" onclick="submitVerification()">Submit for review →</button>
-          <div id="verification-status-box" style="margin-top:22px;"></div>
-        </div>
+     
+      <!-- VERIFICATION (work/college email) -->
+<div class="view" id="view-verification">
+  <div class="thread-header">
+    <button class="icon-btn" onclick="showTab('me')">←</button>
+    <div><b>Verify your email</b></div>
+  </div>
+  <div style="overflow-y:auto; flex:1; padding:20px 22px;">
+    <p class="hint" style="margin-bottom:22px;">Verify a work or college email to show a badge on your profile. We'll email you a 6-digit code. Personal addresses like Gmail can't be used for this badge.</p>
+
+    <div class="field">
+      <label>Work or college email</label>
+      <input type="email" id="work-email" placeholder="you@company.com or you@college.ac.in">
+    </div>
+    <button class="btn-primary" id="email-send-btn" onclick="requestEmailCode()">Send code →</button>
+
+    <div id="email-code-section" style="display:none; margin-top:20px;">
+      <div class="field">
+        <label>6-digit code</label>
+        <input type="text" id="email-code" maxlength="6" inputmode="numeric" placeholder="123456">
       </div>
+      <button class="btn-primary" id="email-confirm-btn" onclick="confirmEmailCode()">Verify →</button>
+    </div>
+
+    <div id="verification-status-box" style="margin-top:22px;"></div>
+  </div>
+</div>
 
       <!-- MY DETAILS (view/edit saved profile) -->
       <div class="view" id="view-my-details">
@@ -320,22 +338,20 @@
         </div>
       </div>
 
-      <!-- ADMIN REVIEW -->
-      <div class="view" id="view-admin">
-        <div class="thread-header">
-          <button class="icon-btn" onclick="showTab('me')">←</button>
-          <div><b>Admin Review</b></div>
-        </div>
-        <div style="overflow-y:auto; flex:1;">
-          <div class="section-title">Pending / flagged listings</div>
-          <div id="admin-listings-list"><p style="padding:0 22px;font-size:12.5px;color:var(--ink-soft);">Loading...</p></div>
+      <!-- BLOCKED USERS -->
+<div class="view" id="view-blocked">
+  <div class="thread-header">
+    <button class="icon-btn" onclick="showTab('me')">←</button>
+    <div><b>Blocked users</b></div>
+  </div>
+  <div id="blocked-list" style="overflow-y:auto; flex:1;">
+    <div class="loading-screen"><div class="spinner"></div><p>Loading...</p></div>
+  </div>
+</div>
 
-          <div class="section-title">Pending ID verifications</div>
-          <div id="admin-verifications-list"><p style="padding:0 22px;font-size:12.5px;color:var(--ink-soft);">Loading...</p></div>
-        </div>
-      </div>
 
-      <!-- ME -->
+
+      
       <div class="view" id="view-me">
         <div class="app-header"><div class="logo"><span class="dot"></span>Profile</div></div>
         <div class="me-hero">
@@ -347,19 +363,19 @@
           <div class="row"><b style="font-size:13.5px;color:var(--teal);">Trust score</b><span id="trust-score-val" class="mono-val">—</span></div>
           <div class="trust-track"><i id="trust-track-fill" style="width:0%;"></i></div>
         </div>
+
+
         <div class="settings-list">
-          <div class="settings-row"><div class="si">🪪</div><b>ID verification</b><span class="tag" id="me-verification-tag">—</span></div>
-          <div class="settings-row" style="cursor:pointer;" onclick="openVerificationScreen()"><div class="si">📤</div><b>Submit ID for verification</b></div>
-          <div class="settings-row" style="cursor:pointer;" onclick="openMyDetails()"><div class="si">📋</div><b>My Details</b></div>
-          <div class="settings-row" style="cursor:pointer;" onclick="openConversationsList()">
-            <div class="si">💬</div><b>Messages</b>
-          </div>
-          <div class="settings-row" id="admin-link-row" style="display:none; cursor:pointer;" onclick="openAdminReview()">
-            <div class="si">🛡️</div><b>Admin Review Queue</b>
-          </div>
-          <div class="settings-row" id="host-links-row" style="display:none; cursor:pointer;" onclick="showTab('mylistings')"><div class="si">🏠</div><b>My Listings</b></div>
-          <div class="settings-row" style="cursor:pointer;" onclick="logout()"><div class="si">🚪</div><b>Log out</b></div>
-        </div>
+  <div class="settings-row"><div class="si">✅</div><b>Verification</b><span class="tag" id="me-verification-tag">—</span></div>
+  <div class="settings-row" style="cursor:pointer;" onclick="openVerificationScreen()"><div class="si">✉️</div><b>Verify work/college email</b></div>
+  <div class="settings-row" style="cursor:pointer;" onclick="openMyDetails()"><div class="si">📋</div><b>My Details</b></div>
+  <div class="settings-row" style="cursor:pointer;" onclick="openPublicProfile(State.userId)"><div class="si">👤</div><b>View my public profile</b></div>
+<div class="settings-row" style="cursor:pointer;" onclick="openConversationsList()"><div class="si">💬</div><b>Messages</b><span class="tag" id="messages-count-tag" style="display:none; background:var(--coral); color:white;"></span></div>  <div class="settings-row" id="host-links-row" style="display:none; cursor:pointer;" onclick="showTab('mylistings')"><div class="si">🏠</div><b>My Listings</b></div>
+  <div class="settings-row" id="inquiries-link-row" style="display:none; cursor:pointer;" onclick="openInquiries()"><div class="si">📨</div><b>Inquiries</b><span class="tag" id="inquiries-count-tag" style="display:none;"></span></div>
+  <div class="settings-row" style="cursor:pointer;" onclick="openBlockedList()"><div class="si">🚫</div><b>Blocked users</b></div>
+  <div class="settings-row" style="cursor:pointer;" onclick="logout()"><div class="si">🚪</div><b>Log out</b></div>
+</div>
+        
       </div>
 
       <div class="sheet-overlay" id="sheet-overlay" onclick="closeSheet(event)">
@@ -373,26 +389,33 @@
         <button class="nav-btn active" data-tab="discover" onclick="showTab('discover')">Discover</button>
         <button class="nav-btn" data-tab="matches" onclick="showTab('matches')">Matches <span class="badge" id="incoming-badge" style="display:none;"></span></button>
         <button class="nav-btn" data-tab="checklist" onclick="showTab('checklist')">Household</button>
-        <button class="nav-btn" data-tab="me" onclick="showTab('me')">Profile</button>
-      </div>
+        <button class="nav-btn" data-tab="me" onclick="showTab('me')">Profile <span class="badge" id="messages-badge" style="display:none;"></span></button>      </div>
     </div>
   </div>
 </div>
 
-<script src="js/state.js"></script>
-<script src="js/api.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/upload.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/discover.js"></script>
-<script src="js/matches.js"></script>
-<script src="js/household.js"></script>
-<script src="js/geocode.js"></script>
-<script src="js/listings.js"></script>
-<script src="js/verification.js"></script>
-<script src="js/mydetails.js"></script>
-<script src="js/main.js"></script>
-<script src="js/admin.js"></script>
-<script src="js/chat.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/upload.js"></script>
+  <script src="js/geocode.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/discover.js"></script>
+  <script src="js/matches.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/household.js"></script>
+  <script src="js/listings.js"></script>
+  <script src="js/listing-manage.js"></script>
+<script src="js/listing-search.js"></script>
+  <script src="js/verification.js"></script>
+  <script src="js/mydetails.js"></script>
+  <script src="js/profile-public.js"></script>
+  <script src="js/safety.js"></script>
+  <script src="js/unread.js"></script>
+  <script src="js/mylocation.js"></script>
+  <script src="js/main.js"></script>
+
+
+
 </body>
 </html>

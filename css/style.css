@@ -252,3 +252,22 @@ body{
 .listing-photo-gallery img{
   width:220px; height:160px; object-fit:cover; border-radius:14px; flex:0 0 auto;
 }
+
+.badge-row{ display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-top:10px; }
+.badge-chip{ display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; padding:6px 12px; border-radius:100px; background:var(--teal-soft); color:var(--teal); }
+.badge-chip.muted{ background:var(--mist); color:var(--ink-soft); }
+.stars{ color:var(--saffron); letter-spacing:1px; }
+.review-item{ padding:12px 0; border-bottom:1px solid var(--line); }
+.review-item:last-child{ border-bottom:none; }
+.review-item .rv-head{ display:flex; justify-content:space-between; align-items:baseline; font-size:13px; }
+.review-item .rv-body{ font-size:13px; color:var(--ink-soft); margin-top:4px; line-height:1.5; }
+.star-picker{ display:flex; gap:6px; margin-bottom:12px; }
+.star-picker button{ background:none; border:none; font-size:30px; cursor:pointer; color:var(--line); padding:0; line-height:1; }
+.star-picker button.on{ color:var(--saffron); }
+
+
+.feat-grid{ display:flex; flex-wrap:wrap; gap:8px; }
+.feat-chip{ padding:8px 13px; border-radius:100px; border:1.5px solid var(--line); background:var(--paper);
+  font-size:12.5px; font-weight:600; color:var(--ink-soft); cursor:pointer; user-select:none; }
+.feat-chip.on{ background:var(--teal-soft); border-color:var(--teal); color:var(--teal); }
+.filter-panel{ background:var(--mist); border-radius:14px; padding:14px 16px; margin-top:10px; }

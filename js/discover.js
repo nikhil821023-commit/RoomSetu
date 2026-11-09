@@ -1,5 +1,3 @@
-// Discovery feed + profile detail sheet + sending a match request.
-
 async function loadDiscover() {
   const container = document.getElementById('discover-list');
   container.innerHTML = '<div class="loading-screen"><div class="spinner"></div><p>Loading matches...</p></div>';
@@ -13,8 +11,7 @@ async function loadDiscover() {
     container.innerHTML = results.map(p => `
       <div class="match-card" onclick="openProfile(${p.userId})">
         <div class="mc-top">
-          <div class="avatar" style="background:${avatarColor(p.userId)}">${p.photoUrl ? `<img src="${p.photoUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:16px;">` : p.name.charAt(0)}${p.verificationStatus === 'VERIFIED' ? '<span class="vbadge">✓</span>' : ''}</div>
-          <div>
+          <div class="avatar" style="background:${avatarColor(p.userId)}">${p.photoUrl ? `<img src="${p.photoUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:16px;">` : p.name.charAt(0)}${p.workEmailDomain ? '<span class="vbadge">✓</span>' : ''}</div>
             <div class="mc-name-row"><b>${escapeHtml(p.name)}</b></div>
             <div class="mc-loc">📍 ${escapeHtml(p.locality || '')}</div>
           </div>
@@ -38,9 +35,9 @@ async function openProfile(userId) {
       <div class="avatar" style="background:${avatarColor(p.userId)}">${p.photoUrl ? `<img src="${p.photoUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:16px;">` : p.name.charAt(0)}</div>
       <h2>${escapeHtml(p.name)}</h2>
       <div style="font-size:13px;color:var(--ink-soft);">📍 ${escapeHtml(p.locality || '')}</div>
-      ${p.verificationStatus === 'VERIFIED'
-        ? `<div class="verified-strip">✓ ID Verified</div>`
-        : `<div class="verified-strip" style="background:var(--mist);color:var(--ink-soft);">Not yet ID-verified</div>`}
+      ${p.workEmailDomain
+        ? `<div class="verified-strip">✓ Email verified · @${escapeHtml(p.workEmailDomain)}</div>`
+        : `<div class="verified-strip" style="background:var(--mist);color:var(--ink-soft);">Work/college email not verified</div>`}
     </div>
 
     <div class="pd-section-label">Why you matched</div>
@@ -55,6 +52,7 @@ async function openProfile(userId) {
     <div id="host-listings-slot"></div>
 
     <div class="pd-cta">
+      <button class="btn-link" style="width:100%;" onclick="openPublicProfile(${p.userId})">View full profile & reviews →</button>
       <button class="btn-ghost" onclick="closeSheet()" style="flex:0 0 auto;">Skip</button>
       <button class="btn-primary" id="request-match-btn" onclick="requestMatch(${p.userId})">Send match request →</button>
     </div>
@@ -112,4 +110,4 @@ async function requestMatch(targetUserId) {
     toast(e.message, 'error');
     btn.disabled = false; btn.innerHTML = 'Send match request →';
   }
-}
+}    

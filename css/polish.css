@@ -1,0 +1,251 @@
+/* RoomSetu UI polish — load AFTER style.css. Pure overrides; no HTML/JS changes needed.
+   To undo: remove the <link> to this file. */
+
+:root{
+  --ease: cubic-bezier(.2,.8,.2,1);
+  --radius-card: 20px;
+  --ring: 0 0 0 3px rgba(232,163,61,.28);
+}
+
+::selection{ background:rgba(232,163,61,.35); }
+button{ font-family:inherit; -webkit-tap-highlight-color:transparent; }
+button, .opt-chip, .feat-chip, .match-card, .listing-card, .household-row, .settings-row, .check-item{
+  transition: transform .18s var(--ease), box-shadow .2s var(--ease), background-color .18s var(--ease),
+              border-color .18s var(--ease), color .18s var(--ease), opacity .18s var(--ease);
+}
+
+/* ---------- Page + phone ---------- */
+body{ padding:32px 20px 48px; }
+.phone{
+  height:min(780px, calc(100vh - 64px));
+  min-height:620px;
+  box-shadow: 0 40px 80px -30px rgba(0,0,0,.65), 0 18px 40px -18px rgba(18,33,59,.5), 0 0 0 1px rgba(255,255,255,.06);
+}
+.status-bar{ color:var(--ink); }
+.panel h1{ letter-spacing:-.01em; }
+.panel .eyebrow:hover{ background:rgba(232,163,61,.12); }
+
+/* View switch animation */
+.view.active{ animation: viewIn .28s var(--ease); }
+@keyframes viewIn{ from{ opacity:0; transform:translateY(8px); } to{ opacity:1; transform:none; } }
+
+/* ---------- Buttons ---------- */
+.btn-primary{
+  background:linear-gradient(180deg, #1a2d4f, var(--ink));
+  box-shadow:0 8px 18px -8px rgba(18,33,59,.55), inset 0 1px 0 rgba(255,255,255,.08);
+  letter-spacing:.01em;
+}
+.btn-primary:hover:not(:disabled){ transform:translateY(-1px); box-shadow:0 12px 22px -8px rgba(18,33,59,.6), inset 0 1px 0 rgba(255,255,255,.1); }
+.btn-primary:active:not(:disabled){ transform:translateY(0) scale(.985); }
+.btn-ghost:hover{ background:var(--mist); border-color:#d3cbb6; }
+.btn-ghost:active{ transform:scale(.97); }
+.btn-link:hover{ text-decoration:underline; text-underline-offset:3px; }
+.icon-btn:hover{ background:#e1e6ef; transform:scale(1.06); }
+.icon-btn:active{ transform:scale(.94); }
+
+/* Visible keyboard focus everywhere */
+button:focus-visible, .opt-chip:focus-visible, .feat-chip:focus-visible{ outline:none; box-shadow:var(--ring); }
+.field input:focus, .field select:focus, .add-row input:focus, .thread-input input:focus,
+.otp-boxes input:focus, textarea:focus{ border-color:var(--saffron); box-shadow:var(--ring); outline:none; }
+.field input::placeholder, textarea::placeholder, .thread-input input::placeholder{ color:#a9afbd; }
+.field select{ appearance:none; background-image:linear-gradient(45deg,transparent 50%,var(--ink-soft) 50%),linear-gradient(135deg,var(--ink-soft) 50%,transparent 50%);
+  background-position:calc(100% - 20px) 54%, calc(100% - 15px) 54%; background-size:5px 5px,5px 5px; background-repeat:no-repeat; padding-right:38px; }
+
+/* ---------- Auth + onboarding ---------- */
+.auth-view{ padding-top:44px; }
+.auth-view h2, .ob-heading{ letter-spacing:-.01em; }
+.otp-boxes{ gap:9px; }
+.otp-boxes input{ width:46px; height:56px; background:#fff; box-shadow:0 2px 0 rgba(18,33,59,.04); }
+.ob-progress span{ transition:background-color .3s var(--ease); }
+.opt-chip{ background:#fff; }
+.opt-chip:hover{ border-color:var(--ink-soft); color:var(--ink); transform:translateY(-1px); }
+.opt-chip:active{ transform:scale(.96); }
+.opt-chip.selected{ box-shadow:0 8px 16px -8px rgba(18,33,59,.55); }
+
+/* ---------- Header + sub-nav ---------- */
+.app-header{ padding:14px 22px 14px; }
+.app-header .logo .dot{ box-shadow:0 0 0 4px rgba(232,163,61,.22); }
+.sub-nav{ position:relative; }
+.sub-pill{ padding:8px 16px; }
+.sub-pill:hover:not(.on){ background:#e1e6ef; color:var(--ink); }
+.sub-pill:active{ transform:scale(.96); }
+.sub-pill.on{ box-shadow:0 6px 14px -6px rgba(18,33,59,.5); }
+
+/* ---------- Bottom nav ---------- */
+.bottom-nav{
+  background:rgba(255,253,249,.92); backdrop-filter:blur(10px);
+  box-shadow:0 -10px 24px -18px rgba(18,33,59,.35);
+}
+.nav-btn{ font-size:11px; letter-spacing:.01em; }
+.nav-btn::before{
+  content:""; position:absolute; top:0; left:50%; width:22px; height:3px; border-radius:0 0 4px 4px;
+  background:var(--saffron); transform:translateX(-50%) scaleX(0); transition:transform .25s var(--ease);
+}
+.nav-btn.active::before{ transform:translateX(-50%) scaleX(1); }
+.nav-btn:hover{ color:var(--ink-soft); }
+.nav-btn.active{ color:var(--ink); font-weight:700; }
+.nav-btn .badge{ box-shadow:0 0 0 2px var(--paper); }
+
+/* ---------- Cards (roommates + listings) ---------- */
+.match-card, .listing-card{ border-radius:var(--radius-card); }
+.match-card:hover, .listing-card:hover{ transform:translateY(-3px); box-shadow:0 18px 32px -16px rgba(18,33,59,.35); border-color:#d8d0ba; }
+.match-card:active, .listing-card:active{ transform:translateY(-1px) scale(.992); }
+.avatar{ box-shadow:0 6px 14px -6px rgba(18,33,59,.4); }
+.mc-name-row b{ letter-spacing:-.005em; }
+.mc-quote{ background:linear-gradient(135deg, var(--mist), #f6f1e6); }
+.mc-tags{ display:flex; flex-wrap:wrap; gap:6px; }
+.lc-photo{ height:164px; background:var(--mist); }
+.listing-card .lc-rent{ letter-spacing:-.01em; }
+.listing-card .lc-tags .tag, .mc-tags .tag{ background:var(--teal-soft); color:var(--teal); }
+.tag{ white-space:nowrap; }
+
+/* ---------- Bottom sheet ---------- */
+.sheet-overlay{ backdrop-filter:blur(3px); transition:opacity .25s var(--ease); }
+.sheet{ border-radius:28px 28px 0 0; }
+.verified-strip{ box-shadow:inset 0 0 0 1px rgba(47,111,107,.18); }
+.compat-bar{ height:9px; }
+.compat-bar i{ background:linear-gradient(90deg, var(--teal), #4a9d97); transition:width .6s var(--ease); }
+.ai-summary-box{ border:1px solid rgba(47,111,107,.15); }
+
+/* ---------- Lists (requests, households, inbox) ---------- */
+.req-row, .household-row, .lc-my-row{ background:transparent; }
+.req-row:hover, .household-row:hover{ background:rgba(238,241,246,.65); }
+.req-actions button{ box-shadow:0 6px 12px -6px rgba(18,33,59,.45); }
+.req-actions button:hover{ transform:scale(1.08); }
+.req-actions button:active{ transform:scale(.92); }
+.section-title{ padding-top:20px; }
+
+/* ---------- Household ---------- */
+.card-block{ box-shadow:0 10px 24px -18px rgba(18,33,59,.3); }
+.split-bar{ height:12px; }
+.checkbox{ transition:all .2s var(--ease); }
+.checkbox.on{ transform:scale(1.05); }
+.check-item:hover .checkbox:not(.on){ border-color:var(--teal); }
+.add-row button:hover{ transform:translateY(-1px); }
+
+/* ---------- Chat ---------- */
+.thread-header{ background:var(--paper); }
+.thread-body{ background:linear-gradient(180deg, #fbf8f1, var(--paper)); scroll-behavior:smooth; }
+.bubble{ animation:bubbleIn .22s var(--ease); box-shadow:0 2px 6px -3px rgba(18,33,59,.18); word-wrap:break-word; overflow-wrap:anywhere; }
+.bubble.me{ background:linear-gradient(180deg, #1a2d4f, var(--ink)); }
+.bubble.them{ background:#fff; border:1px solid var(--line); }
+@keyframes bubbleIn{ from{ opacity:0; transform:translateY(6px) scale(.98); } to{ opacity:1; transform:none; } }
+.thread-input{ background:var(--paper); }
+.send-btn:hover{ transform:scale(1.07); }
+.send-btn:active{ transform:scale(.92); }
+
+/* ---------- Profile (Me) ---------- */
+.me-hero{ padding-top:4px; }
+.trust-meter{ border:1px solid rgba(47,111,107,.12); }
+.trust-track i{ background:linear-gradient(90deg, var(--teal), #4a9d97); transition:width .8s var(--ease); }
+.settings-list{ background:var(--paper); border:1px solid var(--line); border-radius:18px; padding:2px 14px; margin-bottom:22px; }
+.settings-row:last-child{ border-bottom:none; }
+.settings-row[onclick]:hover{ background:rgba(238,241,246,.7); }
+.settings-row[onclick]:hover .si{ background:#e1e6ef; }
+.settings-row[onclick]:active{ transform:scale(.99); }
+.settings-row[onclick]::after{ content:"›"; color:#b5bac7; font-size:20px; line-height:1; margin-left:2px; }
+
+/* ---------- Photos + features ---------- */
+.photo-tile{ box-shadow:inset 0 0 0 1px var(--line); }
+.photo-add:hover{ border-color:var(--saffron); color:var(--saffron-deep); background:#fff8ec; }
+.photo-remove:hover{ background:var(--coral); }
+.feat-chip:hover{ border-color:var(--ink-soft); }
+.feat-chip:active{ transform:scale(.96); }
+.autocomplete-dropdown{ border-radius:14px; }
+.autocomplete-item{ transition:background-color .15s; }
+.filter-panel{ border:1px solid var(--line); }
+
+/* ---------- Toast, loading, empty ---------- */
+.toast-item{ border-radius:14px; font-weight:500; backdrop-filter:blur(6px); }
+.loading-screen .spinner{ border-color:rgba(18,33,59,.1); border-top-color:var(--saffron); }
+.empty-state{ padding:64px 32px; }
+.empty-state b{ font-family:'Fraunces', serif; font-size:17px; font-weight:600; }
+
+/* ---------- Status pills ---------- */
+.status-pill{ letter-spacing:.04em; }
+
+/* ---------- Responsive ---------- */
+@media (max-width:900px){
+  .stage{ gap:32px; }
+  .panel{ max-width:520px; text-align:center; }
+  .panel p.lede{ margin-left:auto; margin-right:auto; }
+  .panel h1{ font-size:40px; }
+}
+/* Global touch hygiene */
+html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+button, .opt-chip, .feat-chip, .nav-btn, .settings-row, .match-card, .listing-card, .household-row, .check-item{
+  touch-action:manipulation; -webkit-user-select:none; user-select:none;
+}
+input, textarea{ -webkit-user-select:text; user-select:text; }
+
+/* ===== APP MODE: real phones (and small touch tablets) =====
+   The fake phone frame, notch, fake status bar and left marketing panel are dropped;
+   the app fills the whole screen like a native app. */
+@media (max-width:520px), (hover:none) and (pointer:coarse) and (max-width:900px){
+  html, body{ height:100%; overscroll-behavior:none; }
+  body{ display:block; padding:0; min-height:100vh; min-height:100dvh; background:var(--paper); }
+  .stage{ display:block; max-width:none; width:100%; gap:0; }
+  .panel{ display:none; }
+  .phone-wrap{ width:100%; }
+  .phone{
+    width:100%; max-width:none; min-height:0;
+    height:100vh; height:100dvh;
+    border:none; border-radius:0; box-shadow:none;
+    padding-top:env(safe-area-inset-top);
+  }
+  .notch, .status-bar{ display:none; }
+
+  /* Home-indicator safe area */
+  .bottom-nav{ flex:0 0 auto; height:calc(66px + env(safe-area-inset-bottom)); padding-bottom:env(safe-area-inset-bottom); }
+  .thread-input{ padding-bottom:max(12px, env(safe-area-inset-bottom)); }
+  .sheet{ max-height:92%; }
+  .sheet-body{ padding-bottom:calc(28px + env(safe-area-inset-bottom)); }
+  #toast{ left:16px; right:16px; bottom:calc(84px + env(safe-area-inset-bottom)); }
+
+  /* iOS Safari zooms the page when an input is under 16px. Stop that. */
+  input, select, textarea{ font-size:16px !important; }
+  .otp-boxes input{ font-size:20px !important; }
+
+  /* Comfortable tap targets */
+  .icon-btn{ width:40px; height:40px; }
+  .nav-btn{ font-size:11px; }
+  .opt-chip, .feat-chip{ padding-top:11px; padding-bottom:11px; }
+  .req-actions button{ width:40px; height:40px; }
+  .settings-row{ padding-top:15px; padding-bottom:15px; }
+
+  /* Smooth native-feeling scrolling, no scroll chaining to the page */
+  .view, .thread-body, .sheet-body, #conversations-list, #inquiries-list, #my-listings-list, #blocked-list{
+    -webkit-overflow-scrolling:touch; overscroll-behavior:contain;
+  }
+
+  /* Slightly tighter side gutters on small screens */
+  .auth-view{ padding-left:22px; padding-right:22px; }
+  #view-onboarding{ padding-left:22px; padding-right:22px; }
+  .otp-boxes{ justify-content:space-between; }
+  .otp-boxes input{ width:calc((100% - 45px) / 6); }
+}
+
+/* Very small phones (iPhone SE, small Androids) */
+@media (max-width:360px){
+  .auth-view h2, .ob-heading{ font-size:24px; }
+  .compat-row .label{ width:96px; font-size:12px; }
+  .mc-top{ padding:14px 12px 10px; }
+  .match-card, .listing-card{ margin-bottom:14px; }
+}
+
+/* Short landscape phones: shrink the nav a bit so content has room */
+@media (max-height:480px) and (orientation:landscape){
+  .bottom-nav{ height:calc(52px + env(safe-area-inset-bottom)); }
+  .auth-view{ padding-top:16px; }
+}
+
+/* No sticky hover effects on touch screens */
+@media (hover:none){
+  .match-card:hover, .listing-card:hover, .opt-chip:hover, .btn-primary:hover:not(:disabled),
+  .icon-btn:hover, .send-btn:hover, .req-actions button:hover{ transform:none; }
+  .match-card:hover, .listing-card:hover{ box-shadow:0 10px 24px -16px rgba(18,33,59,.25); border-color:var(--line); }
+}
+
+@media (prefers-reduced-motion:reduce){
+  *, *::before, *::after{ animation:none !important; transition:none !important; scroll-behavior:auto !important; }
+}

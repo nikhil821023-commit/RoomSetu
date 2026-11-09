@@ -15,6 +15,7 @@ async function loadMatches() {
       html += incoming.map(m => `
         <div class="req-row">
           <div class="avatar" style="width:44px;height:44px;font-size:15px;border-radius:13px;background:${avatarColor(m.requesterId)}">${m.requesterName.charAt(0)}</div>
+          <div class="txt" style="cursor:pointer;" onclick="openPublicProfile(${m.requesterId})"><b>${escapeHtml(m.requesterName)}</b><div class="sub">${m.compatibilityScore}% compatible · tap to view profile</div></div>
           <div class="txt"><b>${escapeHtml(m.requesterName)}</b><div class="sub">${m.compatibilityScore}% compatible</div></div>
           <div class="req-actions">
             <button class="accept" onclick="respondMatch(${m.id}, true)">✓</button>

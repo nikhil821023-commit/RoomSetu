@@ -2,6 +2,9 @@
 // fine for testing, not for real production traffic without your own provider.
 
 let geocodeDebounceTimer = null;
+let geocodeUnreachableWarned = false;
+
+
 
 async function geocodeAddress(query) {
   const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=1`;
@@ -61,3 +64,39 @@ function initLocationAutocomplete(inputEl, dropdownEl, onSelect) {
     }
   });
 }
+
+
+
+
+async function nominatimSearch(query) {
+  const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=5&countrycodes=in`;
+  const res = await fetch(url);
+  if (!res.ok) return [];
+  const results = await res.json();
+  return results.map(r => ({ label: r.display_name, lat: parseFloat(r.lat), lng: parseFloat(r.lon) }));
+}
+
+async function geocodeSuggestions(query) {
+  const q = query.trim();
+  if (q.length < 3) return [];
+  try {
+    let results = await nominatimSearch(q);
+
+    // Free-text search only matches names OpenStreetMap knows exactly. If nothing
+    // matched, retry once with just the last few words (usually the area and city).
+    const words = q.split(/\s+/);
+    if (!results.length && words.length > 3) {
+      await new Promise(r => setTimeout(r, 1100));
+      results = await nominatimSearch(words.slice(-3).join(' '));
+    }
+    return results;
+  } catch (e) {
+    if (!geocodeUnreachableWarned) {
+      geocodeUnreachableWarned = true;
+      toast("Location search isn't reachable from this network", 'error');
+    }
+    return [];
+  }
+}
+
+

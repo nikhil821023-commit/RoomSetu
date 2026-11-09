@@ -1,10 +1,11 @@
-// ID verification submission. Honest limitation up front: there's no real file
-// storage wired anywhere in the backend (no S3/Cloudinary integration was ever
-// built across any phase) — docUrl is a placeholder string, not an actual upload.
-// This wiring is real; the file storage behind it isn't, yet.
+// Work/college email verification. No admin step: the badge is granted
+// automatically when the emailed code matches.
 
 async function openVerificationScreen() {
   showScreen('view-verification');
+  document.getElementById('email-code-section').style.display = 'none';
+  document.getElementById('work-email').value = '';
+  document.getElementById('email-code').value = '';
   await refreshVerificationStatusBox();
 }
 
@@ -12,44 +13,46 @@ async function refreshVerificationStatusBox() {
   const box = document.getElementById('verification-status-box');
   box.innerHTML = '<p style="font-size:12.5px;color:var(--ink-soft);">Checking status...</p>';
   try {
-    const trust = await api('/trust/' + State.userId);
-    if (trust.idVerified) {
-      box.innerHTML = `<div class="verified-strip">✓ Already verified</div>`;
-    } else {
-      box.innerHTML = `<p style="font-size:12.5px;color:var(--ink-soft);">Not verified yet — submissions are typically reviewed within 24 hours.</p>`;
-    }
+    const p = await api('/public-profile/' + State.userId);
+    box.innerHTML = p.workEmailDomain
+      ? `<div class="verified-strip">✓ Email verified · @${escapeHtml(p.workEmailDomain)}</div>`
+      : `<p style="font-size:12.5px;color:var(--ink-soft);">No work or college email verified yet.</p>`;
   } catch (e) {
     box.innerHTML = '';
   }
 }
 
-async function submitVerification() {
-  const docType = document.getElementById('verify-doc-type').value;
-  const fileInput = document.getElementById('verify-doc-file');
+async function requestEmailCode() {
+  const email = document.getElementById('work-email').value.trim();
+  if (!email) { toast('Enter your work or college email', 'error'); return; }
 
-  if (!fileInput.files.length) {
-    toast('Choose a file to continue', 'error');
-    return;
-  }
-
-  // Placeholder doc URL — a real implementation needs an actual upload endpoint
-  // (multipart POST to S3/Cloudinary/etc.) that returns a real, retrievable URL.
-  // Using the filename here so an admin reviewer at least sees something meaningful
-  // in the queue rather than a dummy string, without pretending this is a real upload.
-  const placeholderDocUrl = 'pending-upload://' + encodeURIComponent(fileInput.files[0].name);
-
-  const btn = document.getElementById('verify-submit-btn');
+  const btn = document.getElementById('email-send-btn');
   btn.disabled = true; btn.innerHTML = '<div class="spinner"></div>';
   try {
-    // Backend expects query params here, not a JSON body — see VerificationController.submit()
-    const query = `?docType=${encodeURIComponent(docType)}&docUrl=${encodeURIComponent(placeholderDocUrl)}`;
-    await api('/verification/submit' + query, { method: 'POST' });
+    await api('/verification/email/request', { method: 'POST', body: { email } });
+    toast('Code sent. Check your inbox (or the backend console in dev)', 'success');
+    document.getElementById('email-code-section').style.display = 'block';
+  } catch (e) {
+    toast(e.message, 'error');
+  } finally {
+    btn.disabled = false; btn.innerHTML = 'Send code →';
+  }
+}
 
-    toast('Submitted for review!', 'success');
+async function confirmEmailCode() {
+  const code = document.getElementById('email-code').value.trim();
+  if (!/^\d{6}$/.test(code)) { toast('Enter the 6-digit code', 'error'); return; }
+
+  const btn = document.getElementById('email-confirm-btn');
+  btn.disabled = true; btn.innerHTML = '<div class="spinner"></div>';
+  try {
+    const res = await api('/verification/email/confirm', { method: 'POST', body: { code } });
+    toast('Verified: @' + res.domain, 'success');
+    document.getElementById('email-code-section').style.display = 'none';
     await refreshVerificationStatusBox();
   } catch (e) {
     toast(e.message, 'error');
   } finally {
-    btn.disabled = false; btn.innerHTML = 'Submit for review →';
+    btn.disabled = false; btn.innerHTML = 'Verify →';
   }
 }

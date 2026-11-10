@@ -51,5 +51,5 @@ async function bootstrap() {
   }
 }
 initOnboardingLocation();
-
+setAuthMethod(localStorage.getItem('roomsetu_auth_method') || 'phone');
 bootstrap();

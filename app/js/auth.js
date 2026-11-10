@@ -20,20 +20,44 @@ function startResendTimer(seconds = 30) {
   }, 1000);
 }
 
+
+function setAuthMethod(method) {
+  State.authMethod = method;
+  localStorage.setItem('roomsetu_auth_method', method);
+  document.getElementById('method-phone').classList.toggle('on', method === 'phone');
+  document.getElementById('method-email').classList.toggle('on', method === 'email');
+  document.getElementById('phone-field').style.display = method === 'phone' ? 'block' : 'none';
+  document.getElementById('email-field').style.display = method === 'email' ? 'block' : 'none';
+  document.getElementById('auth-heading').textContent = method === 'phone' ? "What's your number?" : "What's your email?";
+  document.getElementById('auth-hint').textContent = method === 'phone'
+    ? "We'll text you a one-time code. No passwords to remember."
+    : "We'll email you a one-time code. No passwords to remember.";
+}
+
 async function requestOtp(isSignup) {
-  const phone = document.getElementById('phone-input').value.trim();
-  if (!/^[6-9]\d{9}$/.test(phone)) { toast('Enter a valid 10-digit number', 'error'); return; }
+  const method = State.authMethod || 'phone';
+  let path, body, shown;
 
-  State.isSignup = isSignup; // remember this for verifyOtp
+  if (method === 'email') {
+    const email = document.getElementById('email-input').value.trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { toast('Enter a valid email address', 'error'); return; }
+    path = '/auth/email/request'; body = { email }; shown = email;
+  } else {
+    const phone = document.getElementById('phone-input').value.trim();
+    if (!/^[6-9]\d{9}$/.test(phone)) { toast('Enter a valid 10-digit number', 'error'); return; }
+    path = '/auth/otp/request'; body = { phone }; shown = '+91 ' + phone;
+  }
 
+  State.isSignup = isSignup;
   const btn = document.getElementById('request-otp-btn');
   btn.disabled = true; btn.innerHTML = '<div class="spinner"></div>';
   try {
-    await api('/auth/otp/request', { method: 'POST', auth: false, body: { phone } });
-    State.pendingPhone = phone;
-    document.getElementById('otp-phone-display').textContent = '+91 ' + phone;
-    toast('Code sent to +91 ' + phone, 'success');
+    await api(path, { method: 'POST', auth: false, body });
+    State.otpMethod = method;
+    if (method === 'email') State.pendingEmail = body.email; else State.pendingPhone = body.phone;
 
+    document.getElementById('otp-phone-display').textContent = shown;
+    toast('Code sent to ' + shown, 'success');
     document.getElementById('signup-fields').style.display = isSignup ? 'block' : 'none';
 
     showScreen('view-auth-otp');
@@ -47,9 +71,14 @@ async function requestOtp(isSignup) {
 }
 
 async function resendOtp() {
-  if (!State.pendingPhone) return;
+  const method = State.otpMethod || 'phone';
+  const target = method === 'email' ? State.pendingEmail : State.pendingPhone;
+  if (!target) return;
   try {
-    await api('/auth/otp/request', { method: 'POST', auth: false, body: { phone: State.pendingPhone } });
+    await api(method === 'email' ? '/auth/email/request' : '/auth/otp/request', {
+      method: 'POST', auth: false,
+      body: method === 'email' ? { email: target } : { phone: target }
+    });
     toast('New code sent', 'success');
     startResendTimer();
   } catch (e) {
@@ -57,50 +86,43 @@ async function resendOtp() {
   }
 }
 
-document.addEventListener('input', (e) => {
-  if (e.target.classList.contains('otp-digit') && e.target.value.length === 1) {
-    const next = e.target.nextElementSibling;
-    if (next && next.classList.contains('otp-digit')) next.focus();
-  }
-});
-
 async function verifyOtp() {
   const digits = Array.from(document.querySelectorAll('.otp-digit')).map(i => i.value).join('');
   if (digits.length !== 6) { toast('Enter the full 6-digit code', 'error'); return; }
 
+  const name = document.getElementById('signup-name').value.trim();
+  const role = document.getElementById('signup-role').value;
+  const method = State.otpMethod || 'phone';
+
   const btn = document.getElementById('verify-otp-btn');
   btn.disabled = true; btn.innerHTML = '<div class="spinner"></div>';
   try {
-    const body = { phone: State.pendingPhone, otp: digits };
+    const body = method === 'email'
+      ? { email: State.pendingEmail, otp: digits }
+      : { phone: State.pendingPhone, otp: digits };
+    if (name) { body.name = name; body.role = role; }
 
-    if (State.isSignup) {
-      const name = document.getElementById('signup-name').value.trim();
-      const role = document.getElementById('signup-role').value;
-      if (!name) { toast('Enter your name to finish signing up', 'error'); btn.disabled = false; btn.innerHTML = 'Verify & continue →'; return; }
-      body.name = name;
-      body.role = role;
-    }
+    const res = await api(method === 'email' ? '/auth/email/verify' : '/auth/otp/verify',
+                          { method: 'POST', auth: false, body });
 
-    const res = await api('/auth/otp/verify', { method: 'POST', auth: false, body });
-
-
-
-    State.token = res.token; State.userId = String(res.userId);
-    State.name = res.name; State.role = res.role; State.admin = !!res.admin;
+    State.token = res.token;
+    State.userId = String(res.userId);
+    State.name = res.name;
+    State.role = res.role;
     localStorage.setItem('roomsetu_token', res.token);
     localStorage.setItem('roomsetu_user_id', String(res.userId));
     localStorage.setItem('roomsetu_name', res.name);
     localStorage.setItem('roomsetu_role', res.role);
-    localStorage.setItem('roomsetu_admin', String(State.admin));
 
     toast('Welcome, ' + res.name + '!', 'success');
 
+    // Try loading a profile. If it fails, they haven't completed onboarding yet.
     try {
       await api('/profile/me');
       document.getElementById('bottom-nav').style.display = 'flex';
       showTab('discover');
     } catch (_) {
-      showScreen('view-onboarding'); // no profile yet — not an error, just a new user
+      showScreen('view-onboarding');
     }
   } catch (e) {
     toast(e.message, 'error');
@@ -110,15 +132,17 @@ async function verifyOtp() {
 }
 
 function logout() {
-  stopUnreadPolling();
-  localStorage.removeItem('roomsetu_token');
-  localStorage.removeItem('roomsetu_user_id');
-  localStorage.removeItem('roomsetu_name');
-  localStorage.removeItem('roomsetu_role');
+  if (typeof stopUnreadPolling === 'function') stopUnreadPolling();
+  ['roomsetu_token', 'roomsetu_user_id', 'roomsetu_name', 'roomsetu_role', 'roomsetu_admin']
+    .forEach(k => localStorage.removeItem(k));
   State.token = null;
   document.getElementById('bottom-nav').style.display = 'none';
   showScreen('view-auth-phone');
 }
+
+
+
+
 
 document.querySelectorAll('.opt-grid').forEach(grid => {
   grid.addEventListener('click', (e) => {

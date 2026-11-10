@@ -9,6 +9,12 @@
 <meta property="og:title" content="RoomSetu — Find who you're moving in with">
 <meta property="og:description" content="Compatibility-based flatmate matching, verified listings and move-in tools for India.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://YOUR-DOMAIN/logo/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://YOUR-DOMAIN/logo/og-image.png">
+<link rel="icon" type="image/svg+xml" href="logo/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="logo/favicon-32.png">
+<link rel="apple-touch-icon" href="logo/apple-touch-icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -17,10 +23,9 @@
   --ink:#12213B; --ink-soft:#33456B; --paper:#FFFDF9; --mist:#EEF1F6;
   --saffron:#E8A33D; --saffron-deep:#C8811F; --teal:#2F6F6B; --teal-soft:#E4EFEE;
   --coral:#E06B54; --line:#E2DCCC; --ease:cubic-bezier(.2,.8,.2,1);
-  /* >>> Change this to wherever your app lives <<< */
-}
+  }
 *{box-sizing:border-box;}
-html{scroll-behavior:smooth; -webkit-text-size-adjust:100%;}
+html{scroll-behavior:smooth; scroll-padding-top:76px; -webkit-text-size-adjust:100%;}
 body{margin:0; font-family:'Public Sans',system-ui,sans-serif; color:var(--ink); background:var(--paper); line-height:1.55; -webkit-font-smoothing:antialiased;}
 img,svg{max-width:100%; display:block;}
 a{color:inherit;}
@@ -183,7 +188,6 @@ footer a{text-decoration:none;} footer a:hover{color:#fff;}
 
 /* Responsive */
 @media(max-width:900px){
-  .nav-links a:not(.btn){display:none;}
   .hero{padding:44px 0 64px;}
   .hero .wrap{grid-template-columns:1fr; gap:44px; text-align:center;}
   .hero p.lede{margin-left:auto; margin-right:auto;}
@@ -205,22 +209,166 @@ footer a{text-decoration:none;} footer a:hover{color:#fff;}
   .sec-head{margin-bottom:34px;}
   footer .wrap{flex-direction:column; text-align:center;}
 }
+
+/* ---- v2 additions ---- */
+.nav{transition:box-shadow .25s;}
+.nav.scrolled{box-shadow:0 10px 30px -18px rgba(0,0,0,.7);}
+.nav-cta{display:flex; align-items:center; gap:10px;}
+.menu-btn{display:none; width:44px; height:44px; border-radius:12px; border:1px solid rgba(255,255,255,.22); background:transparent; cursor:pointer; flex-direction:column; align-items:center; justify-content:center; gap:5px; padding:0;}
+.menu-btn span{display:block; width:18px; height:2px; background:#F4F1E8; border-radius:2px; transition:transform .25s var(--ease), opacity .2s;}
+.menu-btn[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.menu-btn[aria-expanded="true"] span:nth-child(2){opacity:0;}
+.menu-btn[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+@keyframes bobA{0%,100%{transform:rotate(2.5deg) translateY(0);}50%{transform:rotate(2.5deg) translateY(-9px);}}
+@keyframes bobB{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+@keyframes fa{0%,100%{transform:rotate(-4deg) translateY(0);}50%{transform:rotate(-4deg) translateY(-6px);}}
+@keyframes fb{0%,100%{transform:rotate(3deg) translateY(0);}50%{transform:rotate(3deg) translateY(6px);}}
+.mock{animation:bobA 7s ease-in-out infinite;}
+.float.a{animation:fa 5s ease-in-out infinite;}
+.float.b{animation:fb 6s ease-in-out infinite;}
+
+/* Demo */
+.demo{background:var(--mist);}
+.dgroup{margin-bottom:20px;}
+.dlabel{color:var(--ink-soft); margin-bottom:10px;}
+.dopts{display:flex; flex-wrap:wrap; gap:9px;}
+.dopts button{font-family:inherit; border:1.5px solid var(--line); background:#fff; color:var(--ink-soft); font-weight:600; font-size:14px; padding:11px 17px; border-radius:100px; cursor:pointer; transition:all .18s var(--ease); touch-action:manipulation; -webkit-user-select:none; user-select:none; -webkit-tap-highlight-color:transparent;}
+.dopts button:hover{border-color:var(--ink-soft); color:var(--ink);}
+.dopts button.on{background:var(--ink); border-color:var(--ink); color:#fff; box-shadow:0 8px 16px -8px rgba(18,33,59,.55);}
+.dcard{background:#fff; border:1px solid var(--line); border-radius:26px; padding:28px; box-shadow:0 26px 46px -30px rgba(18,33,59,.5); max-width:440px; margin:0 auto;}
+.dhead{display:flex; gap:13px; align-items:center; margin-bottom:22px;}
+.dhead b{display:block; font-size:16px;}
+.dhead small{color:var(--ink-soft); font-size:12.5px;}
+.dring{--p:88; width:150px; height:150px; border-radius:50%; margin:0 auto 26px; display:flex; align-items:center; justify-content:center; background:conic-gradient(var(--teal) calc(var(--p)*1%), var(--mist) 0); transition:background .5s var(--ease);}
+.dring>div{width:118px; height:118px; border-radius:50%; background:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center;}
+.dring b{font-family:'Fraunces',serif; font-size:34px; line-height:1;}
+.dring small{font-size:12px; color:var(--teal); font-weight:700; margin-top:4px;}
+.drow{display:flex; align-items:center; gap:12px; margin-bottom:13px; font-size:13.5px; font-weight:600;}
+.drow span{width:92px; flex:0 0 auto;}
+.dbar{flex:1; height:9px; background:var(--mist); border-radius:6px; overflow:hidden;}
+.dbar i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--teal),#4a9d97); border-radius:6px; transition:width .5s var(--ease);}
+.drow em{font-style:normal; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft); width:40px; text-align:right;}
+
+/* Compare */
+.ctable{max-width:820px; margin:0 auto; background:#fff; border:1px solid var(--line); border-radius:24px; overflow:hidden; box-shadow:0 24px 44px -32px rgba(18,33,59,.4);}
+.crow{display:grid; grid-template-columns:1.2fr 1fr 1.2fr; border-bottom:1px solid var(--line); font-size:15px;}
+.crow:last-child{border-bottom:none;}
+.crow>div{padding:17px 20px; display:flex; align-items:center;}
+.crow>div:first-child{font-weight:600;}
+.chead{background:var(--mist); font-weight:700; font-size:13px; letter-spacing:.02em;}
+.crow .no{color:#8a91a3;}
+.crow .us{background:var(--teal-soft); color:var(--teal); font-weight:700;}
+.chead .us{background:var(--ink); color:#fff;}
+
+/* Sticky mobile CTA */
+.sticky-cta{display:none;}
+@media(max-width:900px){
+  .menu-btn{display:flex;}
+  .nav-links{position:absolute; top:100%; left:0; right:0; background:#12213B; display:none; flex-direction:column; align-items:stretch; gap:0; padding:6px 18px 18px; border-top:1px solid rgba(255,255,255,.08); box-shadow:0 24px 40px -20px rgba(0,0,0,.6);}
+  .nav-links.open{display:flex;}
+  .nav-links a{padding:15px 4px; font-size:16px; border-bottom:1px solid rgba(255,255,255,.08);}
+  .nav-links a:last-child{border-bottom:none;}
+}
+@media(max-width:700px){
+  .sticky-cta{display:flex; position:fixed; left:12px; right:12px; bottom:calc(12px + env(safe-area-inset-bottom)); z-index:60; align-items:center; justify-content:space-between; gap:12px; background:rgba(18,33,59,.96); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); color:#F4F1E8; padding:10px 10px 10px 18px; border-radius:18px; box-shadow:0 18px 40px -12px rgba(0,0,0,.6); font-weight:700; font-size:14px; transform:translateY(140%); transition:transform .35s var(--ease);}
+  .sticky-cta.show{transform:none;}
+  .sticky-cta .btn{padding:12px 18px; font-size:14px; border-radius:12px;}
+  footer{padding-bottom:calc(96px + env(safe-area-inset-bottom));}
+}
+@media(max-width:520px){
+  .mock{animation-name:bobB;}
+  .nav .btn{padding:10px 14px; font-size:13.5px;}
+  .crow{font-size:13px; grid-template-columns:1.15fr .95fr 1.15fr;}
+  .crow>div{padding:13px 11px;}
+  .dcard{padding:22px;}
+  .drow span{width:84px;}
+}
+
+/* ---- Typography v3 ---- */
+.hero p.lede{font-size:clamp(17.5px,2.2vw,20.5px); line-height:1.7; font-weight:400; color:#C3CBDB; max-width:27em; letter-spacing:.002em;}
+.hero p.lede strong{color:#fff; font-weight:600; background:linear-gradient(transparent 72%, rgba(232,163,61,.3) 0); padding:0 .08em; border-radius:2px;}
+
+body{font-size:16.5px; line-height:1.65; font-feature-settings:"kern","liga"; text-rendering:optimizeLegibility;}
+h1,h2,h3{font-optical-sizing:auto; font-feature-settings:"kern","liga","ss01"; text-wrap:balance;}
+p,li,summary{text-wrap:pretty;}
+.hero h1{font-size:clamp(40px,6.2vw,68px); line-height:1.02; letter-spacing:-.03em; font-weight:600; margin-bottom:22px;}
+.hero h1 em{font-weight:500; letter-spacing:-.02em; background:linear-gradient(transparent 80%, rgba(232,163,61,.32) 0); padding:0 .06em;}
+.sec-head h2,.split h2{font-size:clamp(32px,4.8vw,50px); line-height:1.07; letter-spacing:-.025em; margin-bottom:16px;}
+.sec-head p,.split p,.final p{font-size:clamp(16.5px,1.9vw,18.5px); line-height:1.65;}
+.final h2{font-size:clamp(34px,5.4vw,58px); line-height:1.05; letter-spacing:-.028em;}
+.eyebrow{display:flex; align-items:center; gap:12px; font-size:11.5px; letter-spacing:.16em; font-weight:500; margin-bottom:16px;}
+.eyebrow::before{content:""; width:26px; height:2px; border-radius:2px; background:currentColor; opacity:.55; flex:0 0 auto;}
+.center .eyebrow{justify-content:center;}
+.hero .pill{letter-spacing:.14em;}
+.btn{font-size:15.5px; letter-spacing:.005em; font-weight:700;}
+.nav-links a{font-size:14.5px; font-weight:600; letter-spacing:.005em;}
+.logo{letter-spacing:-.015em;}
+.pcard h3,.step h3,.feat h3{font-size:21px; line-height:1.2; letter-spacing:-.015em;}
+.pcard p,.step p,.feat p{font-size:15.5px; line-height:1.65;}
+.pcard .n{letter-spacing:-.03em; font-weight:500;}
+.ticks li{font-size:16px; line-height:1.5; font-weight:600;}
+summary{font-family:'Fraunces',serif; font-weight:600; font-size:19px; letter-spacing:-.01em; line-height:1.3;}
+details p{font-size:16px; line-height:1.7; max-width:62ch;}
+.strip .wrap{letter-spacing:.01em;}
+.mono{font-feature-settings:"zero";}
+.pct,.dring b,.drow em,.trow span,.lm-rent{font-variant-numeric:tabular-nums;}
+.lm-rent,.dring b{letter-spacing:-.02em;}
+.crow{line-height:1.45;}
+.hero-note{font-size:13.5px; letter-spacing:.005em;}
+::selection{background:rgba(232,163,61,.4); color:var(--ink);}
+@media(max-width:520px){
+  body{font-size:16px;}
+  .hero h1{font-size:clamp(38px,11.2vw,46px);}
+  .sec-head h2,.split h2{font-size:clamp(30px,8.6vw,36px);}
+  .eyebrow::before{width:20px;}
+  summary{font-size:17.5px;}
+}
+
+/* ---- Logo ---- */
+.logo{gap:11px;}
+.logo-mark{width:36px; height:36px; flex:0 0 auto; display:block; filter:drop-shadow(0 6px 10px rgba(232,163,61,.28));}
+.logo span{line-height:1;}
+.logo b{color:var(--saffron); font-weight:inherit;}
+footer .logo-mark{width:32px; height:32px; filter:none;}
+
+/* ---- Illustrations ---- */
+.fimg{aspect-ratio:16/9; border-radius:16px; overflow:hidden; margin:-6px -6px 20px; background:var(--teal-soft);}
+.fimg svg{display:block; width:100%; height:100%;}
+.feat{padding:22px 22px 26px;}
+.feat h3,.feat p{padding:0 6px;}
+.lm-photo{display:block; padding:0; height:auto; aspect-ratio:8/5; background:var(--mist); position:relative; overflow:hidden;}
+.lm-photo::after{content:none;}
+.lm-track{display:flex; height:100%; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; -webkit-overflow-scrolling:touch; outline:none;}
+.lm-track::-webkit-scrollbar{display:none;}
+.lm-slide{flex:0 0 100%; scroll-snap-align:start; height:100%;}
+.lm-slide svg{display:block; width:100%; height:100%;}
+.lm-photo .live{position:absolute; left:14px; top:14px; background:rgba(255,255,255,.95); font-size:11px; font-weight:700; padding:5px 11px; border-radius:100px; color:var(--teal); box-shadow:0 6px 14px -6px rgba(18,33,59,.4);}
+.lm-cap{position:absolute; left:12px; bottom:12px; right:84px; background:rgba(18,33,59,.82); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); color:#fff; font-size:12px; font-weight:600; padding:7px 12px; border-radius:100px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:fit-content; max-width:calc(100% - 96px);}
+.lm-dots{position:absolute; right:12px; bottom:18px; display:flex; gap:6px;}
+.lm-dots button{width:8px; height:8px; padding:0; border:none; border-radius:50%; background:rgba(255,255,255,.65); cursor:pointer; transition:all .25s var(--ease); box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.lm-dots button.on{width:22px; border-radius:6px; background:#fff;}
+
 @media(prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important; scroll-behavior:auto!important;} .rv{opacity:1; transform:none;}}
 </style>
 </head>
 <body>
 
-<header class="nav">
+<header class="nav" id="nav">
   <div class="wrap">
-    <a class="logo" href="#top"><i></i>RoomSetu</a>
-    <nav class="nav-links">
+    <a class="logo" href="#top" aria-label="RoomSetu home"><svg class="logo-mark" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="24" fill="#E8A33D"/><path d="M20 45 L50 20 L80 45" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 79 V68 C26 43 74 43 74 68 V79" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 79 H85" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round"/></svg><span>Room<b>Setu</b></span></a>
+    <nav class="nav-links" id="nav-links" aria-label="Main">
       <a href="#how">How it works</a>
+      <a href="#demo">Try a match</a>
       <a href="#features">Features</a>
       <a href="#trust">Trust</a>
       <a href="#hosts">For hosts</a>
       <a href="#faq">FAQ</a>
-      <a class="btn btn-saffron" href="app/">Open the app</a>
     </nav>
+    <div class="nav-cta">
+      <a class="btn btn-saffron" href="https://roomsetu-w8iu.onrender.com">Get started</a>
+      <button class="menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><span></span><span></span><span></span></button>
+    </div>
   </div>
 </header>
 
@@ -232,9 +380,9 @@ footer a{text-decoration:none;} footer a:hover{color:#fff;}
     <div>
       <span class="pill mono">Flatmate matching · India</span>
       <h1>Find out who you're <em>moving in</em> with.</h1>
-      <p class="lede">RoomSetu matches you with flatmates on how you actually live: sleep, food, cleanliness, budget. See trust signals and chat before you commit to a room.</p>
+      <p class="lede">Match with people who <strong>live the way you do</strong>: same sleep schedule, food habits and cleanliness, all within your budget. Check trust badges and chat first, so you can <strong>move&nbsp;in with confidence</strong>.</p>
       <div class="cta-row">
-        <a class="btn btn-saffron" href="app/">Find my flatmate →</a>
+        <a class="btn btn-saffron" href="https://roomsetu-w8iu.onrender.com">Find my flatmate →</a>
         <a class="btn btn-ghost" href="#hosts">I have a room to list</a>
       </div>
       <div class="hero-note"><span>Sign up with your phone number</span><span>No passwords</span><span>Free to start</span></div>
@@ -273,7 +421,7 @@ footer a{text-decoration:none;} footer a:hover{color:#fff;}
     <span>Lifestyle-based matching</span>
     <span>Verified profiles</span>
     <span>Map-pinned listings</span>
-    <span>In-app chat</span>
+    <span>Private chat</span>
     <span>Household tools</span>
   </div>
 </div>
@@ -289,7 +437,7 @@ footer a{text-decoration:none;} footer a:hover{color:#fff;}
     <div class="cards3">
       <div class="pcard rv"><div class="n">01</div><h3>Strangers with no context</h3><p>Brokers and group chats tell you the rent, not whether you'll get along.</p></div>
       <div class="pcard rv"><div class="n">02</div><h3>Listings you can't trust</h3><p>Fake photos, wrong locations and rooms that were rented weeks ago.</p></div>
-      <div class="pcard rv"><div class="n">03</div><h3>Awkward move-in chaos</h3><p>Who pays for what? Who buys the gas cylinder? It starts in week one.</p></div>
+      <div class="pcard rv"><div class="n">03</div><h3>Awkward move&#8209;in chaos</h3><p>Who pays for what? Who buys the gas cylinder? It starts in week one.</p></div>
     </div>
   </div>
 </section>
@@ -299,7 +447,7 @@ footer a{text-decoration:none;} footer a:hover{color:#fff;}
   <div class="wrap">
     <div class="sec-head rv">
       <span class="eyebrow mono">How it works</span>
-      <h2>From sign-up to move-in, in four steps.</h2>
+      <h2>From sign&#8209;up to move&#8209;in, in four steps.</h2>
     </div>
     <div class="steps">
       <div class="step rv"><h3>Sign in with your number</h3><p>A one-time code on your phone. No passwords to remember.</p></div>
@@ -310,21 +458,69 @@ footer a{text-decoration:none;} footer a:hover{color:#fff;}
   </div>
 </section>
 
+<!-- DEMO -->
+<section class="demo" id="demo">
+  <div class="wrap split">
+    <div class="rv">
+      <span class="eyebrow mono">Try it</span>
+      <h2>See how a match gets scored.</h2>
+      <p>Pick how you live and watch your compatibility with Ananya change. This is a simplified preview, and real scores use your full profile.</p>
+      <div class="dgroup"><div class="dlabel mono">Sleep schedule</div>
+        <div class="dopts" data-k="sleep"><button type="button" data-v="0">Before 11pm</button><button type="button" data-v="1" class="on">11pm–1am</button><button type="button" data-v="2">After 1am</button></div></div>
+      <div class="dgroup"><div class="dlabel mono">Food preference</div>
+        <div class="dopts" data-k="food"><button type="button" data-v="0" class="on">Vegetarian</button><button type="button" data-v="1">Eggetarian</button><button type="button" data-v="2">Non-vegetarian</button></div></div>
+      <div class="dgroup"><div class="dlabel mono">Cleanliness</div>
+        <div class="dopts" data-k="clean"><button type="button" data-v="0">Relaxed</button><button type="button" data-v="1" class="on">Tidy weekly</button><button type="button" data-v="2">Very particular</button></div></div>
+    </div>
+    <div class="rv">
+      <div class="dcard" aria-live="polite">
+        <div class="dhead">
+          <div class="av" style="background:#2F6F6B">A</div>
+          <div><b>Ananya</b><small>Before 11pm · Vegetarian · Tidy weekly</small></div>
+        </div>
+        <div class="dring" id="dring" style="--p:88"><div><b id="dscore">88%</b><small id="dverdict">Great match</small></div></div>
+        <div class="drow"><span>Sleep</span><div class="dbar"><i id="b-sleep"></i></div><em id="t-sleep">65%</em></div>
+        <div class="drow"><span>Food</span><div class="dbar"><i id="b-food"></i></div><em id="t-food">100%</em></div>
+        <div class="drow"><span>Cleanliness</span><div class="dbar"><i id="b-clean"></i></div><em id="t-clean">100%</em></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- FEATURES -->
 <section class="features" id="features">
   <div class="wrap">
     <div class="sec-head rv">
       <span class="eyebrow mono">What's inside</span>
-      <h2>Everything for a good flat, in one app.</h2>
-      <p>Matching, listings, messaging and household tools are connected, so you don't juggle five apps.</p>
+      <h2>Everything for a good flat, in one place.</h2>
+      <p>Matching, listings, messaging and household tools are connected, so you don't have to juggle five different sites.</p>
     </div>
     <div class="fgrid">
-      <div class="feat rv"><div class="ico">🎯</div><h3>Compatibility score</h3><p>Matches are ranked on sleep, work-from-home, food preference and cleanliness, with a clear breakdown for each.</p></div>
-      <div class="feat rv"><div class="ico">🏠</div><h3>Rooms &amp; PGs</h3><p>Browse flat shares and PGs with photos, features like Wi-Fi, AC and meals, and filters for rent and distance.</p></div>
-      <div class="feat rv"><div class="ico">📍</div><h3>Map-pinned locations</h3><p>Hosts pin the exact building, so you can search by how far a room is from your office or college.</p></div>
-      <div class="feat rv"><div class="ico">💬</div><h3>Built-in chat</h3><p>Message matches and hosts in the app. No need to share your number before you're comfortable.</p></div>
-      <div class="feat rv"><div class="ico">🧾</div><h3>Household tools</h3><p>Shared move-in checklist and an expense balance between flatmates, so money stays simple.</p></div>
-      <div class="feat rv"><div class="ico">🚫</div><h3>Block &amp; stay safe</h3><p>Block anyone, delete chats on your side, and report listings that look wrong.</p></div>
+      <div class="feat rv"><div class="fimg"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect width="320" height="180" fill="#E4EFEE"/><rect x="51.0" y="90.0" width="54.0" height="64.0" rx="22.0" fill="#12213B"/><ellipse cx="78" cy="67.0" rx="19.0" ry="18.0" fill="#2B2B3A"/><ellipse cx="78" cy="72.0" rx="15.5" ry="16.0" fill="#F2C9A0"/><circle cx="72.0" cy="72.0" r="1.9" fill="#12213B"/><circle cx="84.0" cy="72.0" r="1.9" fill="#12213B"/><path d="M73.0 79.0 Q78 84.0 83.0 79.0" fill="none" stroke="#12213B" stroke-width="1.6" stroke-linecap="round"/><rect x="224.0" y="66.0" width="36.0" height="36.0" rx="14.0" fill="#2B2B3A"/><rect x="215.0" y="90.0" width="54.0" height="64.0" rx="22.0" fill="#E06B54"/><ellipse cx="242" cy="67.0" rx="19.0" ry="18.0" fill="#2B2B3A"/><ellipse cx="242" cy="72.0" rx="15.5" ry="16.0" fill="#8D5A3B"/><circle cx="236.0" cy="72.0" r="1.9" fill="#12213B"/><circle cx="248.0" cy="72.0" r="1.9" fill="#12213B"/><path d="M237.0 79.0 Q242 84.0 247.0 79.0" fill="none" stroke="#12213B" stroke-width="1.6" stroke-linecap="round"/><path d="M104 96 Q160 70 216 96" fill="none" stroke="#E8A33D" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"/><circle cx="160" cy="84" r="34" fill="#fff"/><circle cx="160" cy="84" r="27" fill="none" stroke="#EEF1F6" stroke-width="7"/><circle cx="160" cy="84" r="27" fill="none" stroke="#2F6F6B" stroke-width="7" stroke-linecap="round" stroke-dasharray="156 170" transform="rotate(-90 160 84)"/><text x="160" y="90" text-anchor="middle" font-family="Fraunces,serif" font-weight="700" font-size="19" fill="#12213B">92%</text><rect x="110" y="146" width="100" height="5" rx="2.5" fill="#fff"/><rect x="110" y="146" width="70" height="5" rx="2.5" fill="#2F6F6B"/><rect x="110" y="155" width="100" height="5" rx="2.5" fill="#fff"/><rect x="110" y="155" width="90" height="5" rx="2.5" fill="#2F6F6B"/><rect x="110" y="164" width="100" height="5" rx="2.5" fill="#fff"/><rect x="110" y="164" width="52" height="5" rx="2.5" fill="#E8A33D"/></svg></div><h3>Compatibility score</h3><p>Matches are ranked on sleep, work-from-home, food preference and cleanliness, with a clear breakdown for each.</p></div>
+      <div class="feat rv"><div class="fimg"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect width="320" height="180" fill="#FFF3DF"/><rect y="150" width="320" height="30" fill="#E8D9B8"/><rect x="96" y="22" width="128" height="132" rx="6" fill="#12213B"/><rect x="88" y="18" width="144" height="10" rx="4" fill="#33456B"/><rect x="110" y="40" width="24" height="20" rx="3" fill="#E8A33D"/><rect x="146" y="40" width="24" height="20" rx="3" fill="#46598a"/><rect x="182" y="40" width="24" height="20" rx="3" fill="#E8A33D"/><rect x="110" y="70" width="24" height="20" rx="3" fill="#46598a"/><rect x="146" y="70" width="24" height="20" rx="3" fill="#E8A33D"/><rect x="182" y="70" width="24" height="20" rx="3" fill="#46598a"/><rect x="110" y="100" width="24" height="20" rx="3" fill="#E8A33D"/><rect x="146" y="100" width="24" height="20" rx="3" fill="#46598a"/><rect x="182" y="100" width="24" height="20" rx="3" fill="#E8A33D"/><rect x="148" y="124" width="24" height="30" rx="4" fill="#2F6F6B"/><circle cx="166" cy="140" r="2" fill="#E8A33D"/><rect x="232" y="64" width="2" height="30" fill="#33456B"/><rect x="232" y="64" width="62" height="34" rx="6" fill="#fff"/><text x="263" y="86" text-anchor="middle" font-family="Public Sans,sans-serif" font-weight="800" font-size="13" fill="#2F6F6B">₹12k</text><rect x="30" y="112" width="22" height="42" rx="4" fill="#E06B54"/><ellipse cx="41" cy="100" rx="14" ry="20" fill="#2F6F6B"/></svg></div><h3>Rooms &amp; PGs</h3><p>Browse flat shares and PGs with photos, features like Wi-Fi, AC and meals, and filters for rent and distance.</p></div>
+      <div class="feat rv"><div class="fimg"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect width="320" height="180" fill="#E4EFEE"/><rect x="196" y="18" width="92" height="56" rx="10" fill="#CFE6D2"/><path d="M0 120 q70 -30 140 -4 t180 -22 V180 H0 Z" fill="#BFE0F0" opacity=".7"/><g stroke="#fff" stroke-linecap="round" fill="none"><path d="M-10 60 L330 90" stroke-width="12"/><path d="M110 -10 L150 190" stroke-width="12"/><path d="M250 -10 L214 190" stroke-width="8"/></g><path d="M72 118 Q130 108 138 84 T214 58" fill="none" stroke="#C8811F" stroke-width="4" stroke-dasharray="1 8" stroke-linecap="round"/><g transform="translate(214 58)"><path d="M0 -4 C-16 -26 -22 -34 -22 -42 a22 22 0 1 1 44 0 C22 -34 16 -26 0 -4 Z" fill="#E8A33D"/><circle cx="0" cy="-42" r="8" fill="#fff"/></g><g transform="translate(72 118)"><rect x="-12" y="-30" width="24" height="30" rx="4" fill="#12213B"/><rect x="-7" y="-25" width="5" height="5" fill="#E8A33D"/><rect x="2" y="-25" width="5" height="5" fill="#E8A33D"/><rect x="-7" y="-16" width="5" height="5" fill="#E8A33D"/><rect x="2" y="-16" width="5" height="5" fill="#46598a"/></g><rect x="16" y="140" width="92" height="26" rx="13" fill="#fff"/><text x="62" y="158" text-anchor="middle" font-family="Public Sans,sans-serif" font-weight="700" font-size="11.5" fill="#2F6F6B">1.2 km away</text></svg></div><h3>Map-pinned locations</h3><p>Hosts pin the exact building, so you can search by how far a room is from your office or college.</p></div>
+      <div class="feat rv"><div class="fimg"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect width="320" height="180" fill="#EEF1F6"/><circle cx="38" cy="50" r="16" fill="#F2C9A0"/><ellipse cx="38" cy="45" rx="17" ry="13" fill="#2B2B3A"/><ellipse cx="38" cy="52" rx="13" ry="13" fill="#F2C9A0"/><rect x="64" y="28" width="150" height="46" rx="16" fill="#fff"/><rect x="78" y="42" width="100" height="6" rx="3" fill="#D5DBE6"/><rect x="78" y="55" width="62" height="6" rx="3" fill="#D5DBE6"/><rect x="102" y="88" width="152" height="40" rx="16" fill="#12213B"/><rect x="116" y="101" width="96" height="6" rx="3" fill="#46598a"/><rect x="116" y="112" width="54" height="6" rx="3" fill="#46598a"/><circle cx="284" cy="108" r="16" fill="#8D5A3B"/><ellipse cx="284" cy="102" rx="18" ry="15" fill="#2B2B3A"/><ellipse cx="284" cy="110" rx="13" ry="13" fill="#8D5A3B"/><rect x="64" y="140" width="100" height="26" rx="13" fill="#fff"/><circle cx="84" cy="153" r="3.5" fill="#E8A33D"/><circle cx="96" cy="153" r="3.5" fill="#E8A33D" opacity=".7"/><circle cx="108" cy="153" r="3.5" fill="#E8A33D" opacity=".4"/><circle cx="38" cy="153" r="14" fill="#2F6F6B"/><path d="M31 153 l5 5 l9 -10" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Built-in chat</h3><p>Message matches and hosts right on RoomSetu. No need to share your phone number until you're comfortable.</p></div>
+      <div class="feat rv"><div class="fimg"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect width="320" height="180" fill="#FFF3DF"/><rect x="60" y="22" width="200" height="140" rx="14" fill="#fff"/><text x="80" y="48" font-family="Fraunces,serif" font-weight="700" font-size="14" fill="#12213B">Move-in list</text><rect x="80" y="62" width="16" height="16" rx="5" fill="#2F6F6B" stroke="#2F6F6B" stroke-width="2"/><path d="M84 70 l4 4 l6 -8" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><rect x="106" y="67" width="110" height="6" rx="3" fill="#B9C2D4"/><rect x="80" y="86" width="16" height="16" rx="5" fill="#2F6F6B" stroke="#2F6F6B" stroke-width="2"/><path d="M84 94 l4 4 l6 -8" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><rect x="106" y="91" width="84" height="6" rx="3" fill="#B9C2D4"/><rect x="80" y="110" width="16" height="16" rx="5" fill="#fff" stroke="#D5DBE6" stroke-width="2"/><rect x="106" y="115" width="96" height="6" rx="3" fill="#D5DBE6"/><rect x="80" y="138" width="160" height="10" rx="5" fill="#EEF1F6"/><rect x="80" y="138" width="84" height="10" rx="5" fill="#E8A33D"/><rect x="164" y="138" width="76" height="10" rx="5" fill="#2F6F6B"/><circle cx="262" cy="144" r="22" fill="#E8A33D"/><text x="262" y="152" text-anchor="middle" font-family="Public Sans,sans-serif" font-weight="800" font-size="22" fill="#12213B">₹</text></svg></div><h3>Household tools</h3><p>Shared move-in checklist and an expense balance between flatmates, so money stays simple.</p></div>
+      <div class="feat rv"><div class="fimg"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect width="320" height="180" fill="#E4EFEE"/><path d="M160 22 L216 42 V86 C216 120 192 144 160 158 C128 144 104 120 104 86 V42 Z" fill="#2F6F6B"/><path d="M160 34 L205 50 V86 C205 112 186 133 160 146 Z" fill="#3C8580"/><path d="M136 90 l16 16 l32 -36" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><g><circle cx="60" cy="60" r="24" fill="#fff"/><rect x="50" y="46" width="20" height="28" rx="5" fill="#12213B"/><circle cx="60" cy="68" r="2" fill="#E8A33D"/><circle cx="76" cy="44" r="9" fill="#E8A33D"/><path d="M72 44 l3 3 l5 -6" fill="none" stroke="#12213B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></g><g><circle cx="262" cy="118" r="24" fill="#fff"/><rect x="250" y="109" width="24" height="18" rx="3" fill="#E8A33D"/><path d="M250 112 l12 8 l12 -8" fill="none" stroke="#12213B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="276" cy="100" r="9" fill="#2F6F6B"/><path d="M272 100 l3 3 l5 -6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></g></svg></div><h3>Block &amp; stay safe</h3><p>Block anyone, delete chats on your side, and report listings that look wrong.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARE -->
+<section class="compare">
+  <div class="wrap">
+    <div class="sec-head center rv" style="text-align:center;">
+      <span class="eyebrow mono">Why RoomSetu</span>
+      <h2>Better than group chats and brokers.</h2>
+    </div>
+    <div class="ctable rv" role="table" aria-label="Comparison">
+      <div class="crow chead" role="row"><div role="columnheader"></div><div role="columnheader">Groups &amp; brokers</div><div role="columnheader" class="us">RoomSetu</div></div>
+      <div class="crow" role="row"><div role="cell">Matched on lifestyle</div><div role="cell" class="no">Rarely</div><div role="cell" class="us yes">✓ Compatibility score</div></div>
+      <div class="crow" role="row"><div role="cell">Verified people</div><div role="cell" class="no">Not usually</div><div role="cell" class="us yes">✓ Phone + email badge</div></div>
+      <div class="crow" role="row"><div role="cell">Exact location</div><div role="cell" class="no">Often vague</div><div role="cell" class="us yes">✓ Map pin</div></div>
+      <div class="crow" role="row"><div role="cell">Chat before sharing your number</div><div role="cell" class="no">No</div><div role="cell" class="us yes">✓ Private chat</div></div>
+      <div class="crow" role="row"><div role="cell">Checklist &amp; shared expenses</div><div role="cell" class="no">Separate apps</div><div role="cell" class="us yes">✓ Household tools</div></div>
+      <div class="crow" role="row"><div role="cell">Rooms already taken</div><div role="cell" class="no">Old posts stay up</div><div role="cell" class="us yes">✓ Marked as rented</div></div>
     </div>
   </div>
 </section>
@@ -342,7 +538,7 @@ footer a{text-decoration:none;} footer a:hover{color:#fff;}
         <li>Public profiles with reviews from past flatmates</li>
         <li>Listings are reviewed and can be flagged or removed</li>
       </ul>
-      <a class="btn btn-dark" href="app/">Create a trusted profile →</a>
+      <a class="btn btn-dark" href="https://roomsetu-w8iu.onrender.com">Create a trusted profile →</a>
     </div>
     <div class="split-media rv">
       <div class="trustbox">
@@ -363,7 +559,7 @@ footer a{text-decoration:none;} footer a:hover{color:#fff;}
   <div class="wrap split reverse">
     <div class="split-media rv">
       <div class="listing-mock">
-        <div class="lm-photo"><span>● Live</span></div>
+        <div class="lm-photo"><div class="lm-track" id="lm-track" tabindex="0" aria-label="Room photos, swipe to see more"><div class="lm-slide" data-cap="Furnished room · AC · Wi-Fi"><svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect width="400" height="250" fill="#E4EFEE"/><rect y="188" width="400" height="62" fill="#D9C7A8"/><rect y="184" width="400" height="6" fill="#fff"/><rect x="40" y="34" width="112" height="98" rx="6" fill="#fff"/><rect x="48" y="42" width="96" height="82" fill="#BFE0F0"/><circle cx="112" cy="68" r="14" fill="#E8A33D"/><ellipse cx="78" cy="86" rx="20" ry="8" fill="#fff"/><ellipse cx="92" cy="82" rx="14" ry="8" fill="#fff"/><rect x="95" y="42" width="2.5" height="82" fill="#fff"/><rect x="48" y="82" width="96" height="2.5" fill="#fff"/><rect x="30" y="28" width="24" height="112" rx="8" fill="#F3C77A"/><rect x="138" y="28" width="24" height="112" rx="8" fill="#F3C77A"/><rect x="200" y="22" width="124" height="36" rx="10" fill="#fff"/><rect x="210" y="44" width="104" height="3" rx="1.5" fill="#D5DBE6"/><circle cx="308" cy="33" r="3" fill="#E8A33D"/><rect x="212" y="30" width="30" height="5" rx="2.5" fill="#EEF1F6"/><path d="M214 66 q8 10 0 20 M240 66 q8 10 0 20 M266 66 q8 10 0 20 M292 66 q8 10 0 20" fill="none" stroke="#BFE0F0" stroke-width="3" stroke-linecap="round"/><g fill="none" stroke="#2F6F6B" stroke-width="4" stroke-linecap="round"><path d="M342 48 q22 -20 44 0"/><path d="M349 57 q15 -13 30 0"/><path d="M356 66 q8 -7 16 0"/></g><circle cx="364" cy="75" r="3.2" fill="#2F6F6B"/><rect x="188" y="104" width="196" height="88" rx="12" fill="#33456B"/><rect x="178" y="152" width="214" height="44" rx="10" fill="#12213B"/><rect x="178" y="150" width="214" height="32" rx="10" fill="#2F6F6B"/><rect x="178" y="150" width="214" height="9" rx="4" fill="#E8A33D"/><rect x="196" y="126" width="72" height="30" rx="14" fill="#fff"/><rect x="278" y="126" width="72" height="30" rx="14" fill="#FDF3DE"/><rect x="188" y="192" width="10" height="10" fill="#8B5E3C"/><rect x="372" y="192" width="10" height="10" fill="#8B5E3C"/><rect x="146" y="158" width="30" height="36" rx="4" fill="#8B5E3C"/><rect x="152" y="170" width="18" height="3" rx="1.5" fill="#6d4829"/><rect x="159" y="138" width="3" height="20" fill="#12213B"/><path d="M148 140 L173 140 L168 120 L153 120 Z" fill="#E8A33D"/><path d="M158 144 q4 24 -2 40 M166 144 q-4 24 2 40" fill="none" stroke="#F3C77A" stroke-width="0" /><rect x="232" y="76" width="58" height="42" rx="4" fill="#fff"/><path d="M238 112 L254 90 L264 102 L272 94 L284 112 Z" fill="#2F6F6B"/><circle cx="272" cy="86" r="5" fill="#E8A33D"/><rect x="14" y="162" width="30" height="30" rx="5" fill="#E06B54"/><ellipse cx="22" cy="150" rx="8" ry="16" fill="#2F6F6B" transform="rotate(-22 22 150)"/><ellipse cx="36" cy="148" rx="8" ry="17" fill="#3C8580" transform="rotate(20 36 148)"/><ellipse cx="29" cy="144" rx="7" ry="17" fill="#2F6F6B"/><ellipse cx="250" cy="226" rx="130" ry="12" fill="#E8A33D" opacity=".28"/></svg></div><div class="lm-slide" data-cap="Shared living room, meet your flatmates"><svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect width="400" height="250" fill="#EEF1F6"/><rect y="190" width="400" height="60" fill="#E2D6BD"/><rect y="186" width="400" height="6" fill="#fff"/><rect x="28" y="72" width="124" height="6" rx="3" fill="#8B5E3C"/><rect x="36" y="42" width="9" height="30" rx="1.5" fill="#2F6F6B"/><rect x="48" y="48" width="9" height="24" rx="1.5" fill="#E8A33D"/><rect x="58" y="38" width="9" height="34" rx="1.5" fill="#E06B54"/><rect x="70" y="46" width="9" height="26" rx="1.5" fill="#33456B"/><rect x="108" y="54" width="22" height="18" rx="4" fill="#E06B54"/><ellipse cx="119" cy="46" rx="6" ry="12" fill="#2F6F6B"/><ellipse cx="112" cy="49" rx="5" ry="9" fill="#3C8580" transform="rotate(-24 112 49)"/><ellipse cx="127" cy="49" rx="5" ry="9" fill="#3C8580" transform="rotate(24 127 49)"/><rect x="262" y="44" width="84" height="58" rx="5" fill="#fff"/><circle cx="292" cy="66" r="12" fill="#E8A33D"/><path d="M270 92 q16 -20 32 -2 q14 -16 34 2 Z" fill="#2F6F6B"/><rect x="199" y="0" width="2" height="36" fill="#12213B"/><path d="M180 58 q20 -34 40 0 Z" fill="#E8A33D"/><ellipse cx="200" cy="58" rx="20" ry="3" fill="#F3C77A"/><rect x="66" y="112" width="268" height="86" rx="24" fill="#2F6F6B"/><rect x="129.7" y="125.0" width="56.7" height="67.2" rx="23.1" fill="#12213B"/><ellipse cx="158" cy="100.8" rx="19.9" ry="18.9" fill="#2B2B3A"/><ellipse cx="158" cy="106.1" rx="16.3" ry="16.8" fill="#F2C9A0"/><circle cx="151.7" cy="106.1" r="2.0" fill="#12213B"/><circle cx="164.3" cy="106.1" r="2.0" fill="#12213B"/><path d="M152.8 113.5 Q158 118.7 163.2 113.5" fill="none" stroke="#12213B" stroke-width="1.7" stroke-linecap="round"/><rect x="227.1" y="99.8" width="37.8" height="37.8" rx="14.7" fill="#5A3A24"/><rect x="217.7" y="125.0" width="56.7" height="67.2" rx="23.1" fill="#E06B54"/><ellipse cx="246" cy="100.8" rx="19.9" ry="18.9" fill="#5A3A24"/><ellipse cx="246" cy="106.1" rx="16.3" ry="16.8" fill="#C68A5E"/><circle cx="239.7" cy="106.1" r="2.0" fill="#12213B"/><circle cx="252.3" cy="106.1" r="2.0" fill="#12213B"/><path d="M240.8 113.5 Q246 118.7 251.2 113.5" fill="none" stroke="#12213B" stroke-width="1.7" stroke-linecap="round"/><rect x="58" y="152" width="284" height="48" rx="18" fill="#3C8580"/><rect x="46" y="128" width="40" height="72" rx="18" fill="#2F6F6B"/><rect x="314" y="128" width="40" height="72" rx="18" fill="#2F6F6B"/><rect x="104" y="140" width="40" height="40" rx="10" fill="#E8A33D" transform="rotate(-8 124 160)"/><rect x="262" y="140" width="40" height="40" rx="10" fill="#fff" transform="rotate(8 282 160)"/><rect x="76" y="198" width="8" height="10" fill="#8B5E3C"/><rect x="316" y="198" width="8" height="10" fill="#8B5E3C"/><path d="M200 98 c-7 -9 -20 0 -10 10 l10 9 l10 -9 c10 -10 -3 -19 -10 -10 Z" fill="#E8A33D"/><rect x="268" y="54" width="0" height="0"/><rect x="146" y="214" width="108" height="12" rx="6" fill="#8B5E3C"/><rect x="156" y="224" width="6" height="14" fill="#6d4829"/><rect x="238" y="224" width="6" height="14" fill="#6d4829"/><rect x="166" y="202" width="16" height="12" rx="3" fill="#fff"/><rect x="214" y="202" width="16" height="12" rx="3" fill="#E8A33D"/><path d="M172 200 q-3 -6 0 -10 M222 200 q-3 -6 0 -10" fill="none" stroke="#B9C2D4" stroke-width="2" stroke-linecap="round"/><rect x="352" y="168" width="30" height="34" rx="5" fill="#2F6F6B"/><ellipse cx="360" cy="150" rx="8" ry="20" fill="#3C8580" transform="rotate(-18 360 150)"/><ellipse cx="376" cy="148" rx="8" ry="22" fill="#2F6F6B" transform="rotate(18 376 148)"/><ellipse cx="367" cy="140" rx="7" ry="22" fill="#4a9d97"/></svg></div><div class="lm-slide" data-cap="Kitchen · Fridge · Washing machine"><svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect width="400" height="250" fill="#FFF3DF"/><rect y="190" width="400" height="60" fill="#D9C7A8"/><rect y="186" width="400" height="6" fill="#fff"/><rect x="26" y="34" width="204" height="58" rx="8" fill="#2F6F6B"/><rect x="127" y="34" width="2" height="58" fill="#245552"/><rect x="112" y="64" width="9" height="3" rx="1.5" fill="#E8A33D"/><rect x="135" y="64" width="9" height="3" rx="1.5" fill="#E8A33D"/><rect x="40" y="104" width="176" height="3" rx="1.5" fill="#33456B"/><rect x="58" y="107" width="3" height="20" fill="#E8A33D"/><ellipse cx="59.5" cy="131" rx="6" ry="8" fill="#E8A33D"/><rect x="92" y="107" width="3" height="20" fill="#E06B54"/><ellipse cx="93.5" cy="131" rx="6" ry="8" fill="#E06B54"/><rect x="170" y="107" width="3" height="20" fill="#33456B"/><ellipse cx="171.5" cy="131" rx="6" ry="8" fill="#33456B"/><rect x="22" y="146" width="212" height="10" rx="3" fill="#EEF1F6"/><rect x="26" y="156" width="204" height="34" fill="#12213B"/><rect x="127" y="156" width="2" height="34" fill="#0B1524"/><rect x="108" y="168" width="14" height="3" rx="1.5" fill="#E8A33D"/><rect x="134" y="168" width="14" height="3" rx="1.5" fill="#E8A33D"/><rect x="64" y="122" width="56" height="26" rx="6" fill="#C8811F"/><rect x="60" y="118" width="64" height="7" rx="3.5" fill="#E8A33D"/><rect x="88" y="112" width="8" height="7" rx="3" fill="#12213B"/><path d="M78 108 q-6 -10 0 -18 M92 108 q-6 -10 0 -18 M106 108 q-6 -10 0 -18" fill="none" stroke="#C9D0DE" stroke-width="3" stroke-linecap="round"/><path d="M170 148 q18 24 36 0 Z" fill="#fff"/><circle cx="180" cy="142" r="7" fill="#E06B54"/><circle cx="193" cy="140" r="7" fill="#E8A33D"/><circle cx="202" cy="144" r="6" fill="#7BB661"/><rect x="240" y="66" width="62" height="126" rx="10" fill="#E4EFEE"/><rect x="240" y="112" width="62" height="3" fill="#B9D3D0"/><rect x="288" y="82" width="4" height="22" rx="2" fill="#33456B"/><rect x="288" y="124" width="4" height="32" rx="2" fill="#33456B"/><rect x="250" y="76" width="16" height="12" rx="2" fill="#E8A33D"/><rect x="250" y="94" width="10" height="10" rx="2" fill="#E06B54"/><rect x="312" y="34" width="78" height="82" rx="6" fill="#fff"/><rect x="319" y="41" width="64" height="68" fill="#BFE0F0"/><path d="M319 109 L319 92 q12 -14 24 0 q10 -16 24 0 q8 -8 16 2 L383 109 Z" fill="#7BB661"/><circle cx="366" cy="60" r="9" fill="#E8A33D"/><rect x="350" y="41" width="2.5" height="68" fill="#fff"/><rect x="312" y="124" width="78" height="68" rx="9" fill="#fff"/><rect x="312" y="124" width="78" height="14" rx="9" fill="#EEF1F6"/><circle cx="326" cy="131" r="3" fill="#E8A33D"/><circle cx="337" cy="131" r="3" fill="#2F6F6B"/><circle cx="351" cy="162" r="23" fill="#D5DBE6"/><circle cx="351" cy="162" r="17" fill="#BFE0F0"/><path d="M340 164 q6 -8 12 0 q6 8 12 0" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><rect x="150" y="0" width="2" height="22" fill="#12213B"/><path d="M136 36 q15 -24 30 0 Z" fill="#E06B54"/></svg></div></div><span class="live">● Live</span><div class="lm-cap" id="lm-cap">Furnished room · AC · Wi-Fi</div><div class="lm-dots" id="lm-dots"><button type="button" class="on" aria-label="Photo 1"></button><button type="button" aria-label="Photo 2"></button><button type="button" aria-label="Photo 3"></button></div></div>
         <div class="lm-body">
           <div class="lm-rent">₹12,000 <small>/ month</small></div>
           <div class="lm-loc">HSR Layout, Bengaluru · Flat share</div>
@@ -382,7 +578,7 @@ footer a{text-decoration:none;} footer a:hover{color:#fff;}
         <li>Mark as rented to hide it from search, reopen anytime</li>
         <li>Edit or remove your listing whenever you like</li>
       </ul>
-      <a class="btn btn-dark" href="app/">List your room →</a>
+      <a class="btn btn-dark" href="https://roomsetu-w8iu.onrender.com">List your room →</a>
     </div>
   </div>
 </section>
@@ -411,21 +607,26 @@ footer a{text-decoration:none;} footer a:hover{color:#fff;}
     <h2>Your next flatmate is a <em>good match</em> away.</h2>
     <p>Create your profile in a minute and see who fits how you live.</p>
     <div class="cta-row">
-      <a class="btn btn-saffron" href="app/">Get started free →</a>
+      <a class="btn btn-saffron" href="https://roomsetu-w8iu.onrender.com">Get started free →</a>
     </div>
   </div>
 </div>
 
 </main>
 
+<div class="sticky-cta" id="sticky-cta" aria-hidden="true">
+  <span>Find your flatmate</span>
+  <a class="btn btn-saffron" href="https://roomsetu-w8iu.onrender.com" tabindex="-1">Get started →</a>
+</div>
+
 <footer>
   <div class="wrap">
-    <a class="logo" href="#top"><i></i>RoomSetu</a>
+    <a class="logo" href="#top" aria-label="RoomSetu home"><svg class="logo-mark" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="24" fill="#E8A33D"/><path d="M20 45 L50 20 L80 45" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 79 V68 C26 43 74 43 74 68 V79" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 79 H85" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round"/></svg><span>Room<b>Setu</b></span></a>
     <nav>
       <a href="#how">How it works</a>
       <a href="#features">Features</a>
       <a href="#faq">FAQ</a>
-      <a href="mailto:roomsetu.official@gmail.com">Contact</a>
+      <a href="mailto:hello@roomsetu.in">Contact</a>
       <a href="privacy.html">Privacy</a>
       <a href="terms.html">Terms</a>
     </nav>
@@ -443,6 +644,85 @@ footer a{text-decoration:none;} footer a:hover{color:#fff;}
     }, { threshold: .12 });
     els.forEach(el => io.observe(el));
   } else { els.forEach(el => el.classList.add('in')); }
+
+  // Sticky nav shadow + mobile menu
+  const nav = document.getElementById('nav'), menuBtn = document.getElementById('menu-btn'), links = document.getElementById('nav-links');
+  const closeMenu = () => { links.classList.remove('open'); menuBtn.setAttribute('aria-expanded','false'); menuBtn.setAttribute('aria-label','Open menu'); };
+  menuBtn.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open); menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  });
+  links.addEventListener('click', e => { if (e.target.closest('a')) closeMenu(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+  window.addEventListener('resize', () => { if (innerWidth > 900) closeMenu(); });
+
+  // Sticky mobile CTA: show after the hero, hide over the final CTA
+  const sticky = document.getElementById('sticky-cta'), finalSec = document.querySelector('.final');
+  let finalVisible = false;
+  const updateSticky = () => {
+    const show = window.scrollY > 520 && !finalVisible;
+    sticky.classList.toggle('show', show);
+    sticky.setAttribute('aria-hidden', !show);
+    sticky.querySelector('a').tabIndex = show ? 0 : -1;
+    nav.classList.toggle('scrolled', window.scrollY > 8);
+  };
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(en => { finalVisible = en[0].isIntersecting; updateSticky(); }).observe(finalSec);
+  }
+  window.addEventListener('scroll', updateSticky, { passive: true });
+  updateSticky();
+
+  // Match demo (Ananya: before 11pm, vegetarian, tidy weekly)
+  const ANANYA = { sleep: 0, food: 0, clean: 1 };
+  const pick = { sleep: 1, food: 0, clean: 1 };
+  const score = d => d === 0 ? 100 : d === 1 ? 65 : 30;
+  const foodScore = d => d === 0 ? 100 : d === 1 ? 60 : 25;
+  function renderDemo() {
+    const r = {
+      sleep: score(Math.abs(pick.sleep - ANANYA.sleep)),
+      food: foodScore(Math.abs(pick.food - ANANYA.food)),
+      clean: score(Math.abs(pick.clean - ANANYA.clean)),
+    };
+    const total = Math.round((r.sleep + r.food + r.clean) / 3);
+    for (const k in r) {
+      document.getElementById('b-' + k).style.width = r[k] + '%';
+      document.getElementById('t-' + k).textContent = r[k] + '%';
+    }
+    document.getElementById('dring').style.setProperty('--p', total);
+    document.getElementById('dscore').textContent = total + '%';
+    document.getElementById('dverdict').textContent = total >= 85 ? 'Great match' : total >= 65 ? 'Good match' : total >= 50 ? 'Some differences' : 'Different lifestyles';
+  }
+  document.querySelectorAll('.dopts').forEach(g => g.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    g.querySelectorAll('button').forEach(x => x.classList.remove('on')); b.classList.add('on');
+    pick[g.dataset.k] = +b.dataset.v; renderDemo();
+  }));
+  renderDemo();
+
+  // Listing photo carousel: swipe, dots, gentle auto-advance
+  (function () {
+    const track = document.getElementById('lm-track'); if (!track) return;
+    const slides = [...track.children], dots = [...document.querySelectorAll('#lm-dots button')], cap = document.getElementById('lm-cap');
+    let idx = 0, userTouched = false, timer;
+    const show = (i, smooth = true) => {
+      idx = (i + slides.length) % slides.length;
+      track.scrollTo({ left: track.clientWidth * idx, behavior: smooth ? 'smooth' : 'auto' });
+    };
+    const sync = () => {
+      const i = Math.round(track.scrollLeft / track.clientWidth);
+      if (i !== idx || !dots[i].classList.contains('on')) {
+        idx = i; dots.forEach((d, n) => d.classList.toggle('on', n === i)); cap.textContent = slides[i].dataset.cap;
+      }
+    };
+    track.addEventListener('scroll', sync, { passive: true });
+    dots.forEach((d, n) => d.addEventListener('click', () => { userTouched = true; show(n); }));
+    ['pointerdown', 'keydown', 'wheel'].forEach(ev => track.addEventListener(ev, () => { userTouched = true; }, { passive: true }));
+    track.addEventListener('keydown', e => { if (e.key === 'ArrowRight') show(idx + 1); if (e.key === 'ArrowLeft') show(idx - 1); });
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      timer = setInterval(() => { if (!userTouched && !document.hidden) show(idx + 1); }, 4200);
+    }
+    window.addEventListener('resize', () => show(idx, false));
+  })();
 </script>
 </body>
 </html>

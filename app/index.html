@@ -2,23 +2,30 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
+<title>RoomSetu — Find your flatmate</title>
+<meta name="description" content="Log in to RoomSetu to match with flatmates, chat, and manage your move-in.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<meta name="theme-color" content="#FFFDF9" />
+<meta name="theme-color" content="#12213B" />
+<link rel="icon" type="image/svg+xml" href="../logo/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../logo/favicon-32.png">
+<link rel="apple-touch-icon" href="../logo/apple-touch-icon-180.png">
 <meta name="mobile-web-app-capable" content="yes" />
-<link rel="stylesheet" href="css/polish.css">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/polish.css">
 
 </head>
 <body>
 
 <div class="stage">
   <div class="panel">
-    <button class="eyebrow" onclick="toggleApiConfig()">Live Prototype — API Connected</button>
+    <a class="brand" href="../"><svg class="logo-mark" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="24" fill="#E8A33D"/><path d="M20 45 L50 20 L80 45" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 79 V68 C26 43 74 43 74 68 V79" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 79 H85" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round"/></svg><span>Room<b>Setu</b></span></a>
+    <button class="eyebrow dev-only" onclick="toggleApiConfig()">API settings</button>
     <h1>Find out who<br>you're <em>moving in</em><br>with.</h1>
-    <p class="lede">This build talks to a real RoomSetu backend — auth, matching, and household tools are live, not mocked.</p>
+    <p class="lede">Match with people who live the way you do, check trust badges, and chat first, so you can move in with confidence.</p>
+    <ul class="panel-points"><li>Lifestyle-based compatibility</li><li>Verified profiles and private chat</li><li>Shared checklist and expenses</li></ul>
+    <a class="back-link" href="../">← Back to website</a>
 
     <div class="api-config" id="api-config" style="display:none;">
       <label>Backend API base URL</label>
@@ -39,11 +46,12 @@
 
       <!-- LOADING -->
       <div class="view active" id="view-loading">
-        <div class="loading-screen"><div class="spinner"></div><p>Connecting to RoomSetu...</p></div>
+        <div class="loading-screen"><svg class="logo-mark load-mark" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="24" fill="#E8A33D"/><path d="M20 45 L50 20 L80 45" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 79 V68 C26 43 74 43 74 68 V79" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 79 H85" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round"/></svg><div class="spinner"></div><p>Connecting to RoomSetu...</p></div>
       </div>
 
       <!-- AUTH: PHONE -->
       <div class="view" id="view-auth-phone">
+        <div class="auth-banner"><svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect width="400" height="250" fill="#EEF1F6"/><rect y="190" width="400" height="60" fill="#E2D6BD"/><rect y="186" width="400" height="6" fill="#fff"/><rect x="28" y="72" width="124" height="6" rx="3" fill="#8B5E3C"/><rect x="36" y="42" width="9" height="30" rx="1.5" fill="#2F6F6B"/><rect x="48" y="48" width="9" height="24" rx="1.5" fill="#E8A33D"/><rect x="58" y="38" width="9" height="34" rx="1.5" fill="#E06B54"/><rect x="70" y="46" width="9" height="26" rx="1.5" fill="#33456B"/><rect x="108" y="54" width="22" height="18" rx="4" fill="#E06B54"/><ellipse cx="119" cy="46" rx="6" ry="12" fill="#2F6F6B"/><ellipse cx="112" cy="49" rx="5" ry="9" fill="#3C8580" transform="rotate(-24 112 49)"/><ellipse cx="127" cy="49" rx="5" ry="9" fill="#3C8580" transform="rotate(24 127 49)"/><rect x="262" y="44" width="84" height="58" rx="5" fill="#fff"/><circle cx="292" cy="66" r="12" fill="#E8A33D"/><path d="M270 92 q16 -20 32 -2 q14 -16 34 2 Z" fill="#2F6F6B"/><rect x="199" y="0" width="2" height="36" fill="#12213B"/><path d="M180 58 q20 -34 40 0 Z" fill="#E8A33D"/><ellipse cx="200" cy="58" rx="20" ry="3" fill="#F3C77A"/><rect x="66" y="112" width="268" height="86" rx="24" fill="#2F6F6B"/><rect x="129.7" y="125.0" width="56.7" height="67.2" rx="23.1" fill="#12213B"/><ellipse cx="158" cy="100.8" rx="19.9" ry="18.9" fill="#2B2B3A"/><ellipse cx="158" cy="106.1" rx="16.3" ry="16.8" fill="#F2C9A0"/><circle cx="151.7" cy="106.1" r="2.0" fill="#12213B"/><circle cx="164.3" cy="106.1" r="2.0" fill="#12213B"/><path d="M152.8 113.5 Q158 118.7 163.2 113.5" fill="none" stroke="#12213B" stroke-width="1.7" stroke-linecap="round"/><rect x="227.1" y="99.8" width="37.8" height="37.8" rx="14.7" fill="#5A3A24"/><rect x="217.7" y="125.0" width="56.7" height="67.2" rx="23.1" fill="#E06B54"/><ellipse cx="246" cy="100.8" rx="19.9" ry="18.9" fill="#5A3A24"/><ellipse cx="246" cy="106.1" rx="16.3" ry="16.8" fill="#C68A5E"/><circle cx="239.7" cy="106.1" r="2.0" fill="#12213B"/><circle cx="252.3" cy="106.1" r="2.0" fill="#12213B"/><path d="M240.8 113.5 Q246 118.7 251.2 113.5" fill="none" stroke="#12213B" stroke-width="1.7" stroke-linecap="round"/><rect x="58" y="152" width="284" height="48" rx="18" fill="#3C8580"/><rect x="46" y="128" width="40" height="72" rx="18" fill="#2F6F6B"/><rect x="314" y="128" width="40" height="72" rx="18" fill="#2F6F6B"/><rect x="104" y="140" width="40" height="40" rx="10" fill="#E8A33D" transform="rotate(-8 124 160)"/><rect x="262" y="140" width="40" height="40" rx="10" fill="#fff" transform="rotate(8 282 160)"/><rect x="76" y="198" width="8" height="10" fill="#8B5E3C"/><rect x="316" y="198" width="8" height="10" fill="#8B5E3C"/><path d="M200 98 c-7 -9 -20 0 -10 10 l10 9 l10 -9 c10 -10 -3 -19 -10 -10 Z" fill="#E8A33D"/><rect x="268" y="54" width="0" height="0"/><rect x="146" y="214" width="108" height="12" rx="6" fill="#8B5E3C"/><rect x="156" y="224" width="6" height="14" fill="#6d4829"/><rect x="238" y="224" width="6" height="14" fill="#6d4829"/><rect x="166" y="202" width="16" height="12" rx="3" fill="#fff"/><rect x="214" y="202" width="16" height="12" rx="3" fill="#E8A33D"/><path d="M172 200 q-3 -6 0 -10 M222 200 q-3 -6 0 -10" fill="none" stroke="#B9C2D4" stroke-width="2" stroke-linecap="round"/><rect x="352" y="168" width="30" height="34" rx="5" fill="#2F6F6B"/><ellipse cx="360" cy="150" rx="8" ry="20" fill="#3C8580" transform="rotate(-18 360 150)"/><ellipse cx="376" cy="148" rx="8" ry="22" fill="#2F6F6B" transform="rotate(18 376 148)"/><ellipse cx="367" cy="140" rx="7" ry="22" fill="#4a9d97"/></svg><div class="auth-brand"><svg class="logo-mark" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="24" fill="#E8A33D"/><path d="M20 45 L50 20 L80 45" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 79 V68 C26 43 74 43 74 68 V79" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 79 H85" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round"/></svg><span>Room<b>Setu</b></span></div></div>
         <div class="auth-view">
           <div class="auth-eyebrow">Log in or sign up</div>
           <h2>What's your number?</h2>
@@ -64,6 +72,7 @@
 
       <!-- AUTH: OTP -->
       <div class="view" id="view-auth-otp">
+        <div class="auth-top"><svg class="logo-mark" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="24" fill="#E8A33D"/><path d="M20 45 L50 20 L80 45" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 79 V68 C26 43 74 43 74 68 V79" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 79 H85" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round"/></svg><span>Room<b>Setu</b></span></div>
         <div class="auth-view">
           <div class="auth-eyebrow">Step 2 of 2</div>
           <h2>Enter the code</h2>
@@ -158,7 +167,7 @@
       <!-- DISCOVER -->
       <div class="view" id="view-discover">
         <div class="app-header">
-          <div class="logo"><span class="dot"></span>RoomSetu</div>
+          <div class="logo"><svg class="logo-mark" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="24" fill="#E8A33D"/><path d="M20 45 L50 20 L80 45" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 79 V68 C26 43 74 43 74 68 V79" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 79 H85" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round"/></svg>RoomSetu</div>
           <button class="icon-btn" onclick="discoverMode === 'listings' ? loadListings() : loadDiscover()">↻</button>
         </div>
         <div class="sub-nav">
@@ -172,7 +181,7 @@
 
       <!-- MATCHES -->
       <div class="view" id="view-matches">
-        <div class="app-header"><div class="logo"><span class="dot"></span>Matches</div></div>
+        <div class="app-header"><div class="logo"><svg class="logo-mark" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="24" fill="#E8A33D"/><path d="M20 45 L50 20 L80 45" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 79 V68 C26 43 74 43 74 68 V79" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 79 H85" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round"/></svg>Matches</div></div>
         <div id="matches-list"><div class="loading-screen"><div class="spinner"></div><p>Loading...</p></div></div>
       </div>
 
@@ -209,7 +218,7 @@
 
       <!-- HOUSEHOLDS LIST -->
       <div class="view" id="view-checklist">
-        <div class="app-header"><div class="logo"><span class="dot"></span>Households</div></div>
+        <div class="app-header"><div class="logo"><svg class="logo-mark" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="24" fill="#E8A33D"/><path d="M20 45 L50 20 L80 45" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 79 V68 C26 43 74 43 74 68 V79" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 79 H85" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round"/></svg>Households</div></div>
         <div id="household-list"><div class="loading-screen"><div class="spinner"></div><p>Loading...</p></div></div>
       </div>
 
@@ -355,7 +364,7 @@
 
       
       <div class="view" id="view-me">
-        <div class="app-header"><div class="logo"><span class="dot"></span>Profile</div></div>
+        <div class="app-header"><div class="logo"><svg class="logo-mark" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="24" fill="#E8A33D"/><path d="M20 45 L50 20 L80 45" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 79 V68 C26 43 74 43 74 68 V79" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 79 H85" fill="none" stroke="#12213B" stroke-width="8" stroke-linecap="round"/></svg>Profile</div></div>
         <div class="me-hero">
           <div class="avatar" id="me-avatar" style="background:#C8811F;">A</div>
           <h2 id="me-name">—</h2>
@@ -388,14 +397,15 @@
       </div>
 
       <div class="bottom-nav" id="bottom-nav" style="display:none;">
-        <button class="nav-btn active" data-tab="discover" onclick="showTab('discover')">Discover</button>
-        <button class="nav-btn" data-tab="matches" onclick="showTab('matches')">Matches <span class="badge" id="incoming-badge" style="display:none;"></span></button>
-        <button class="nav-btn" data-tab="checklist" onclick="showTab('checklist')">Household</button>
-        <button class="nav-btn" data-tab="me" onclick="showTab('me')">Profile <span class="badge" id="messages-badge" style="display:none;"></span></button>      </div>
+        <button class="nav-btn active" data-tab="discover" onclick="showTab('discover')"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.8 8.2l-2.1 5.5-5.5 2.1 2.1-5.5z"/></svg>Discover</button>
+        <button class="nav-btn" data-tab="matches" onclick="showTab('matches')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.3A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.6c0 5.7-7.5 10.3-7.5 10.3z"/></svg>Matches <span class="badge" id="incoming-badge" style="display:none;"></span></button>
+        <button class="nav-btn" data-tab="checklist" onclick="showTab('checklist')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11.5L12 4.5l8.5 7"/><path d="M5.5 10.5v9.5h13v-9.5"/><path d="M10 20v-5.5h4V20"/></svg>Household</button>
+        <button class="nav-btn" data-tab="me" onclick="showTab('me')"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 21c0-4.2 3.4-6.8 7.5-6.8s7.5 2.6 7.5 6.8"/></svg>Profile <span class="badge" id="messages-badge" style="display:none;"></span></button>      </div>
     </div>
   </div>
 </div>
 
+  <script>if(/[?&]dev\b/.test(location.search))document.documentElement.classList.add("dev");</script>
   <script src="js/state.js"></script>
   <script src="js/api.js"></script>
   <script src="js/ui.js"></script>

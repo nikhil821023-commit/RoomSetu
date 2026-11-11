@@ -144,6 +144,10 @@ async function saveMyDetails() {
     toast('Fill in locality and budget range', 'error');
     return;
   }
+  if (budgetMin > budgetMax) {
+   toast("Minimum budget can't be higher than the maximum", 'error');
+   return;
+  }
 
   const answers = {};
   document.querySelectorAll('#my-details-body .opt-grid').forEach(grid => {

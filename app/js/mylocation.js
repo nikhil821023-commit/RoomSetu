@@ -15,7 +15,7 @@ function shortLabel(label) {
 function locationFieldHtml(prefix, initialLabel) {
   return `
     <div class="field">
-      <label>Office, college or area you commute to${prefix === 'ob' ? ' (optional)' : ''}</label>
+      <p style="font-size:11.5px; color:var(--ink-soft); margin:8px 0 0; line-height:1.5;">Can't find the exact name? Pick the nearest area, then rename it to whatever you call it. Private: used to match you with people and places nearby. Others only ever see a rough distance band.</p>
       <div class="autocomplete-wrap">
         <input type="text" id="${prefix}-location" value="${escapeHtml(initialLabel || '')}" placeholder="Search a place, e.g. New Town, Kolkata">
         <div class="autocomplete-dropdown" id="${prefix}-location-dropdown"></div>

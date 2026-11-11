@@ -1,19 +1,41 @@
+let peopleRadiusKm = 10;
+
 async function loadDiscover() {
   const container = document.getElementById('discover-list');
   container.innerHTML = '<div class="loading-screen"><div class="spinner"></div><p>Loading matches...</p></div>';
   try {
-    const results = await api('/discover');
+    const profile = await api('/profile/me');
+    const hasPin = profile.latitude != null && profile.longitude != null;
+    const results = await api('/discover?radiusKm=' + peopleRadiusKm);
     State.discoverCache = results;
+
+    const header = hasPin ? `
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:12px;">
+        <div style="font-size:12px; color:var(--ink-soft); line-height:1.4;">📍 People near <b>${escapeHtml(shortLabel(profile.locationLabel || 'your location'))}</b></div>
+        <select onchange="changePeopleRadius(this.value)" style="border:1.5px solid var(--line); border-radius:10px; padding:8px 10px; font-size:12.5px; background:var(--paper);">
+          ${[5, 10, 25, 50].map(km => `<option value="${km}" ${km === peopleRadiusKm ? 'selected' : ''}>Within ${km} km</option>`).join('')}
+        </select>
+      </div>` : `
+      <div style="background:var(--mist); border-radius:14px; padding:14px 16px; margin-bottom:12px;">
+        <b style="font-size:13.5px;">Match with people nearby</b>
+        <p style="font-size:12.5px; color:var(--ink-soft); margin:4px 0 10px; line-height:1.5;">Add the area you want to live near. You'll see people within a few km, even if they named their locality differently.</p>
+        <button class="btn-primary" style="padding:10px;" onclick="openMyDetails()">Add my location →</button>
+      </div>`;
+
     if (!results.length) {
-      container.innerHTML = emptyState('No matches nearby yet', 'Once more people in your locality complete their profile, they\'ll show up here.');
+      container.innerHTML = header + emptyState('No matches nearby yet',
+        hasPin ? `No one within ${peopleRadiusKm} km yet. Try a wider distance, or check back as more people join.`
+               : "Once more people in your locality complete their profile, they'll show up here.");
       return;
     }
-    container.innerHTML = results.map(p => `
+
+    container.innerHTML = header + results.map(p => `
       <div class="match-card" onclick="openProfile(${p.userId})">
         <div class="mc-top">
-          <div class="avatar" style="background:${avatarColor(p.userId)}">${p.photoUrl ? `<img src="${p.photoUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:16px;">` : p.name.charAt(0)}${p.workEmailDomain ? '<span class="vbadge">✓</span>' : ''}</div>
+          <div class="avatar" style="background:${avatarColor(p.userId)}">${p.photoUrl ? `<img src="${p.photoUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:16px;">` : escapeHtml(p.name.charAt(0))}${p.workEmailDomain ? '<span class="vbadge">✓</span>' : ''}</div>
+          <div>
             <div class="mc-name-row"><b>${escapeHtml(p.name)}</b></div>
-            <div class="mc-loc">📍 ${escapeHtml(p.locality || '')}</div>
+            <div class="mc-loc">📍 ${escapeHtml(p.locality || '')}${p.distanceLabel ? ' · ' + p.distanceLabel + ' away' : ''}</div>
           </div>
           <div class="ring">${ringSvg(p.compatibilityScore)}<div class="pct">${p.compatibilityScore}%</div></div>
         </div>
@@ -21,8 +43,13 @@ async function loadDiscover() {
       </div>
     `).join('');
   } catch (e) {
-    container.innerHTML = emptyState('Couldn\'t load matches', e.message);
+    container.innerHTML = emptyState("Couldn't load matches", e.message);
   }
+}
+
+function changePeopleRadius(value) {
+  peopleRadiusKm = Number(value);
+  loadDiscover();
 }
 
 async function openProfile(userId) {
@@ -35,6 +62,7 @@ async function openProfile(userId) {
       <div class="avatar" style="background:${avatarColor(p.userId)}">${p.photoUrl ? `<img src="${p.photoUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:16px;">` : p.name.charAt(0)}</div>
       <h2>${escapeHtml(p.name)}</h2>
       <div style="font-size:13px;color:var(--ink-soft);">📍 ${escapeHtml(p.locality || '')}</div>
+      ${p.distanceLabel ? `<div style="font-size:12px; color:var(--ink-soft);">${p.distanceLabel} away</div>` : ''}
       ${p.workEmailDomain
         ? `<div class="verified-strip">✓ Email verified · @${escapeHtml(p.workEmailDomain)}</div>`
         : `<div class="verified-strip" style="background:var(--mist);color:var(--ink-soft);">Work/college email not verified</div>`}

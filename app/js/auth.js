@@ -171,6 +171,10 @@ async function submitProfile() {
     toast('Fill in locality and budget range', 'error');
     return;
   }
+  if (budgetMin > budgetMax) {
+    toast("Minimum budget can't be higher than the maximum", 'error');
+    return;
+  }
 
   const loc = readLocation(document.getElementById('ob-location'), obLocationState);
   if (!loc.ok) {

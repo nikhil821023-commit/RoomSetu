@@ -287,13 +287,13 @@ footer a{text-decoration:none;} footer a:hover{color:#fff;}
 
 /* ---- Typography v3 ---- */
 .hero p.lede{font-size:clamp(17.5px,2.2vw,20.5px); line-height:1.7; font-weight:400; color:#C3CBDB; max-width:27em; letter-spacing:.002em;}
-.hero p.lede strong{color:#fff; font-weight:600; background:linear-gradient(transparent 72%, rgba(232,163,61,.3) 0); padding:0 .08em; border-radius:2px;}
+.hero p.lede strong{color:#fff; font-weight:600; text-decoration:underline; text-decoration-color:rgba(232,163,61,.85); text-decoration-thickness:2px; text-underline-offset:5px; text-decoration-skip-ink:none;}
 
 body{font-size:16.5px; line-height:1.65; font-feature-settings:"kern","liga"; text-rendering:optimizeLegibility;}
 h1,h2,h3{font-optical-sizing:auto; font-feature-settings:"kern","liga","ss01"; text-wrap:balance;}
 p,li,summary{text-wrap:pretty;}
 .hero h1{font-size:clamp(40px,6.2vw,68px); line-height:1.02; letter-spacing:-.03em; font-weight:600; margin-bottom:22px;}
-.hero h1 em{font-weight:500; letter-spacing:-.02em; background:linear-gradient(transparent 80%, rgba(232,163,61,.32) 0); padding:0 .06em;}
+.hero h1 em{font-weight:500; letter-spacing:-.02em;}
 .sec-head h2,.split h2{font-size:clamp(32px,4.8vw,50px); line-height:1.07; letter-spacing:-.025em; margin-bottom:16px;}
 .sec-head p,.split p,.final p{font-size:clamp(16.5px,1.9vw,18.5px); line-height:1.65;}
 .final h2{font-size:clamp(34px,5.4vw,58px); line-height:1.05; letter-spacing:-.028em;}
@@ -380,7 +380,7 @@ footer .logo-mark{width:32px; height:32px; filter:none;}
     <div>
       <span class="pill mono">Flatmate matching · India</span>
       <h1>Find out who you're <em>moving in</em> with.</h1>
-      <p class="lede">Match with people who <strong>live the way you do</strong>: same sleep schedule, food habits and cleanliness, all within your budget. Check trust badges and chat first, so you can <strong>move&nbsp;in with confidence</strong>.</p>
+      <p class="lede">Rent is the easy part. The hard part is the flatmate who sleeps at 4am and never washes the pan. Tell us how you live, and <strong>we'll match you with people who actually get it</strong>.</p>
       <div class="cta-row">
         <a class="btn btn-saffron" href="app/">Find my flatmate →</a>
         <a class="btn btn-ghost" href="#hosts">I have a room to list</a>
@@ -432,12 +432,12 @@ footer .logo-mark{width:32px; height:32px; filter:none;}
     <div class="sec-head rv">
       <span class="eyebrow mono">The problem</span>
       <h2>Finding a room is easy. Finding the right flatmate isn't.</h2>
-      <p>Most flatmate searches run on random WhatsApp groups and a hope that it works out. Then you find out your flatmate sleeps at 4am and you leave at 6.</p>
+      <p>Most people find a flatmate through a WhatsApp group and a bit of luck. Then you learn your new flatmate sleeps at 4am, and your alarm goes off at 6.</p>
     </div>
     <div class="cards3">
       <div class="pcard rv"><div class="n">01</div><h3>Strangers with no context</h3><p>Brokers and group chats tell you the rent, not whether you'll get along.</p></div>
-      <div class="pcard rv"><div class="n">02</div><h3>Listings you can't trust</h3><p>Fake photos, wrong locations and rooms that were rented weeks ago.</p></div>
-      <div class="pcard rv"><div class="n">03</div><h3>Awkward move&#8209;in chaos</h3><p>Who pays for what? Who buys the gas cylinder? It starts in week one.</p></div>
+      <div class="pcard rv"><div class="n">02</div><h3>Listings you can't trust</h3><p>Photos from some other flat. A pin in the wrong area. A room that was gone two weeks ago.</p></div>
+      <div class="pcard rv"><div class="n">03</div><h3>Awkward move&#8209;in chaos</h3><p>Who buys the gas cylinder? Whose turn is it to pay for Wi-Fi? Week one, and you're already keeping score.</p></div>
     </div>
   </div>
 </section>
@@ -447,13 +447,13 @@ footer .logo-mark{width:32px; height:32px; filter:none;}
   <div class="wrap">
     <div class="sec-head rv">
       <span class="eyebrow mono">How it works</span>
-      <h2>From sign&#8209;up to move&#8209;in, in four steps.</h2>
+      <h2>Four steps from sign&#8209;up to move&#8209;in.</h2>
     </div>
     <div class="steps">
-      <div class="step rv"><h3>Sign in with your number</h3><p>A one-time code on your phone. No passwords to remember.</p></div>
-      <div class="step rv"><h3>Build your profile</h3><p>Budget, locality, sleep schedule, food and cleanliness. It takes about a minute.</p></div>
-      <div class="step rv"><h3>Get matched</h3><p>See flatmates ranked by compatibility and a breakdown of why you fit.</p></div>
-      <div class="step rv"><h3>Chat &amp; move in</h3><p>Message, meet, then use shared checklists and expense splits in your household.</p></div>
+      <div class="step rv"><h3>Sign in with your number</h3><p>We text you a code. That's it, no password to remember.</p></div>
+      <div class="step rv"><h3>Tell us how you live</h3><p>Budget, area, when you sleep, what you eat, how clean you like it.</p></div>
+      <div class="step rv"><h3>See who fits</h3><p>Everyone gets a match score, with the reasons behind it.</p></div>
+      <div class="step rv"><h3>Chat, then decide</h3><p>Talk first. Once you're sure, the checklist and the expense split are already waiting.</p></div>
     </div>
   </div>
 </section>
@@ -492,16 +492,16 @@ footer .logo-mark{width:32px; height:32px; filter:none;}
   <div class="wrap">
     <div class="sec-head rv">
       <span class="eyebrow mono">What's inside</span>
-      <h2>Everything for a good flat, in one place.</h2>
-      <p>Matching, listings, messaging and household tools are connected, so you don't have to juggle five different sites.</p>
+      <h2>One place for the whole flat hunt.</h2>
+      <p>Matching, listings, chat and the money stuff live together, so you're not jumping between five different sites.</p>
     </div>
     <div class="fgrid">
-      <div class="feat rv"><div class="fimg"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect width="320" height="180" fill="#E4EFEE"/><rect x="51.0" y="90.0" width="54.0" height="64.0" rx="22.0" fill="#12213B"/><ellipse cx="78" cy="67.0" rx="19.0" ry="18.0" fill="#2B2B3A"/><ellipse cx="78" cy="72.0" rx="15.5" ry="16.0" fill="#F2C9A0"/><circle cx="72.0" cy="72.0" r="1.9" fill="#12213B"/><circle cx="84.0" cy="72.0" r="1.9" fill="#12213B"/><path d="M73.0 79.0 Q78 84.0 83.0 79.0" fill="none" stroke="#12213B" stroke-width="1.6" stroke-linecap="round"/><rect x="224.0" y="66.0" width="36.0" height="36.0" rx="14.0" fill="#2B2B3A"/><rect x="215.0" y="90.0" width="54.0" height="64.0" rx="22.0" fill="#E06B54"/><ellipse cx="242" cy="67.0" rx="19.0" ry="18.0" fill="#2B2B3A"/><ellipse cx="242" cy="72.0" rx="15.5" ry="16.0" fill="#8D5A3B"/><circle cx="236.0" cy="72.0" r="1.9" fill="#12213B"/><circle cx="248.0" cy="72.0" r="1.9" fill="#12213B"/><path d="M237.0 79.0 Q242 84.0 247.0 79.0" fill="none" stroke="#12213B" stroke-width="1.6" stroke-linecap="round"/><path d="M104 96 Q160 70 216 96" fill="none" stroke="#E8A33D" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"/><circle cx="160" cy="84" r="34" fill="#fff"/><circle cx="160" cy="84" r="27" fill="none" stroke="#EEF1F6" stroke-width="7"/><circle cx="160" cy="84" r="27" fill="none" stroke="#2F6F6B" stroke-width="7" stroke-linecap="round" stroke-dasharray="156 170" transform="rotate(-90 160 84)"/><text x="160" y="90" text-anchor="middle" font-family="Fraunces,serif" font-weight="700" font-size="19" fill="#12213B">92%</text><rect x="110" y="146" width="100" height="5" rx="2.5" fill="#fff"/><rect x="110" y="146" width="70" height="5" rx="2.5" fill="#2F6F6B"/><rect x="110" y="155" width="100" height="5" rx="2.5" fill="#fff"/><rect x="110" y="155" width="90" height="5" rx="2.5" fill="#2F6F6B"/><rect x="110" y="164" width="100" height="5" rx="2.5" fill="#fff"/><rect x="110" y="164" width="52" height="5" rx="2.5" fill="#E8A33D"/></svg></div><h3>Compatibility score</h3><p>Matches are ranked on sleep, work-from-home, food preference and cleanliness, with a clear breakdown for each.</p></div>
-      <div class="feat rv"><div class="fimg"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect width="320" height="180" fill="#FFF3DF"/><rect y="150" width="320" height="30" fill="#E8D9B8"/><rect x="96" y="22" width="128" height="132" rx="6" fill="#12213B"/><rect x="88" y="18" width="144" height="10" rx="4" fill="#33456B"/><rect x="110" y="40" width="24" height="20" rx="3" fill="#E8A33D"/><rect x="146" y="40" width="24" height="20" rx="3" fill="#46598a"/><rect x="182" y="40" width="24" height="20" rx="3" fill="#E8A33D"/><rect x="110" y="70" width="24" height="20" rx="3" fill="#46598a"/><rect x="146" y="70" width="24" height="20" rx="3" fill="#E8A33D"/><rect x="182" y="70" width="24" height="20" rx="3" fill="#46598a"/><rect x="110" y="100" width="24" height="20" rx="3" fill="#E8A33D"/><rect x="146" y="100" width="24" height="20" rx="3" fill="#46598a"/><rect x="182" y="100" width="24" height="20" rx="3" fill="#E8A33D"/><rect x="148" y="124" width="24" height="30" rx="4" fill="#2F6F6B"/><circle cx="166" cy="140" r="2" fill="#E8A33D"/><rect x="232" y="64" width="2" height="30" fill="#33456B"/><rect x="232" y="64" width="62" height="34" rx="6" fill="#fff"/><text x="263" y="86" text-anchor="middle" font-family="Public Sans,sans-serif" font-weight="800" font-size="13" fill="#2F6F6B">₹12k</text><rect x="30" y="112" width="22" height="42" rx="4" fill="#E06B54"/><ellipse cx="41" cy="100" rx="14" ry="20" fill="#2F6F6B"/></svg></div><h3>Rooms &amp; PGs</h3><p>Browse flat shares and PGs with photos, features like Wi-Fi, AC and meals, and filters for rent and distance.</p></div>
-      <div class="feat rv"><div class="fimg"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect width="320" height="180" fill="#E4EFEE"/><rect x="196" y="18" width="92" height="56" rx="10" fill="#CFE6D2"/><path d="M0 120 q70 -30 140 -4 t180 -22 V180 H0 Z" fill="#BFE0F0" opacity=".7"/><g stroke="#fff" stroke-linecap="round" fill="none"><path d="M-10 60 L330 90" stroke-width="12"/><path d="M110 -10 L150 190" stroke-width="12"/><path d="M250 -10 L214 190" stroke-width="8"/></g><path d="M72 118 Q130 108 138 84 T214 58" fill="none" stroke="#C8811F" stroke-width="4" stroke-dasharray="1 8" stroke-linecap="round"/><g transform="translate(214 58)"><path d="M0 -4 C-16 -26 -22 -34 -22 -42 a22 22 0 1 1 44 0 C22 -34 16 -26 0 -4 Z" fill="#E8A33D"/><circle cx="0" cy="-42" r="8" fill="#fff"/></g><g transform="translate(72 118)"><rect x="-12" y="-30" width="24" height="30" rx="4" fill="#12213B"/><rect x="-7" y="-25" width="5" height="5" fill="#E8A33D"/><rect x="2" y="-25" width="5" height="5" fill="#E8A33D"/><rect x="-7" y="-16" width="5" height="5" fill="#E8A33D"/><rect x="2" y="-16" width="5" height="5" fill="#46598a"/></g><rect x="16" y="140" width="92" height="26" rx="13" fill="#fff"/><text x="62" y="158" text-anchor="middle" font-family="Public Sans,sans-serif" font-weight="700" font-size="11.5" fill="#2F6F6B">1.2 km away</text></svg></div><h3>Map-pinned locations</h3><p>Hosts pin the exact building, so you can search by how far a room is from your office or college.</p></div>
-      <div class="feat rv"><div class="fimg"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect width="320" height="180" fill="#EEF1F6"/><circle cx="38" cy="50" r="16" fill="#F2C9A0"/><ellipse cx="38" cy="45" rx="17" ry="13" fill="#2B2B3A"/><ellipse cx="38" cy="52" rx="13" ry="13" fill="#F2C9A0"/><rect x="64" y="28" width="150" height="46" rx="16" fill="#fff"/><rect x="78" y="42" width="100" height="6" rx="3" fill="#D5DBE6"/><rect x="78" y="55" width="62" height="6" rx="3" fill="#D5DBE6"/><rect x="102" y="88" width="152" height="40" rx="16" fill="#12213B"/><rect x="116" y="101" width="96" height="6" rx="3" fill="#46598a"/><rect x="116" y="112" width="54" height="6" rx="3" fill="#46598a"/><circle cx="284" cy="108" r="16" fill="#8D5A3B"/><ellipse cx="284" cy="102" rx="18" ry="15" fill="#2B2B3A"/><ellipse cx="284" cy="110" rx="13" ry="13" fill="#8D5A3B"/><rect x="64" y="140" width="100" height="26" rx="13" fill="#fff"/><circle cx="84" cy="153" r="3.5" fill="#E8A33D"/><circle cx="96" cy="153" r="3.5" fill="#E8A33D" opacity=".7"/><circle cx="108" cy="153" r="3.5" fill="#E8A33D" opacity=".4"/><circle cx="38" cy="153" r="14" fill="#2F6F6B"/><path d="M31 153 l5 5 l9 -10" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Built-in chat</h3><p>Message matches and hosts right on RoomSetu. No need to share your phone number until you're comfortable.</p></div>
-      <div class="feat rv"><div class="fimg"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect width="320" height="180" fill="#FFF3DF"/><rect x="60" y="22" width="200" height="140" rx="14" fill="#fff"/><text x="80" y="48" font-family="Fraunces,serif" font-weight="700" font-size="14" fill="#12213B">Move-in list</text><rect x="80" y="62" width="16" height="16" rx="5" fill="#2F6F6B" stroke="#2F6F6B" stroke-width="2"/><path d="M84 70 l4 4 l6 -8" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><rect x="106" y="67" width="110" height="6" rx="3" fill="#B9C2D4"/><rect x="80" y="86" width="16" height="16" rx="5" fill="#2F6F6B" stroke="#2F6F6B" stroke-width="2"/><path d="M84 94 l4 4 l6 -8" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><rect x="106" y="91" width="84" height="6" rx="3" fill="#B9C2D4"/><rect x="80" y="110" width="16" height="16" rx="5" fill="#fff" stroke="#D5DBE6" stroke-width="2"/><rect x="106" y="115" width="96" height="6" rx="3" fill="#D5DBE6"/><rect x="80" y="138" width="160" height="10" rx="5" fill="#EEF1F6"/><rect x="80" y="138" width="84" height="10" rx="5" fill="#E8A33D"/><rect x="164" y="138" width="76" height="10" rx="5" fill="#2F6F6B"/><circle cx="262" cy="144" r="22" fill="#E8A33D"/><text x="262" y="152" text-anchor="middle" font-family="Public Sans,sans-serif" font-weight="800" font-size="22" fill="#12213B">₹</text></svg></div><h3>Household tools</h3><p>Shared move-in checklist and an expense balance between flatmates, so money stays simple.</p></div>
-      <div class="feat rv"><div class="fimg"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect width="320" height="180" fill="#E4EFEE"/><path d="M160 22 L216 42 V86 C216 120 192 144 160 158 C128 144 104 120 104 86 V42 Z" fill="#2F6F6B"/><path d="M160 34 L205 50 V86 C205 112 186 133 160 146 Z" fill="#3C8580"/><path d="M136 90 l16 16 l32 -36" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><g><circle cx="60" cy="60" r="24" fill="#fff"/><rect x="50" y="46" width="20" height="28" rx="5" fill="#12213B"/><circle cx="60" cy="68" r="2" fill="#E8A33D"/><circle cx="76" cy="44" r="9" fill="#E8A33D"/><path d="M72 44 l3 3 l5 -6" fill="none" stroke="#12213B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></g><g><circle cx="262" cy="118" r="24" fill="#fff"/><rect x="250" y="109" width="24" height="18" rx="3" fill="#E8A33D"/><path d="M250 112 l12 8 l12 -8" fill="none" stroke="#12213B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="276" cy="100" r="9" fill="#2F6F6B"/><path d="M272 100 l3 3 l5 -6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></g></svg></div><h3>Block &amp; stay safe</h3><p>Block anyone, delete chats on your side, and report listings that look wrong.</p></div>
+      <div class="feat rv"><div class="fimg"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect width="320" height="180" fill="#E4EFEE"/><rect x="51.0" y="90.0" width="54.0" height="64.0" rx="22.0" fill="#12213B"/><ellipse cx="78" cy="67.0" rx="19.0" ry="18.0" fill="#2B2B3A"/><ellipse cx="78" cy="72.0" rx="15.5" ry="16.0" fill="#F2C9A0"/><circle cx="72.0" cy="72.0" r="1.9" fill="#12213B"/><circle cx="84.0" cy="72.0" r="1.9" fill="#12213B"/><path d="M73.0 79.0 Q78 84.0 83.0 79.0" fill="none" stroke="#12213B" stroke-width="1.6" stroke-linecap="round"/><rect x="224.0" y="66.0" width="36.0" height="36.0" rx="14.0" fill="#2B2B3A"/><rect x="215.0" y="90.0" width="54.0" height="64.0" rx="22.0" fill="#E06B54"/><ellipse cx="242" cy="67.0" rx="19.0" ry="18.0" fill="#2B2B3A"/><ellipse cx="242" cy="72.0" rx="15.5" ry="16.0" fill="#8D5A3B"/><circle cx="236.0" cy="72.0" r="1.9" fill="#12213B"/><circle cx="248.0" cy="72.0" r="1.9" fill="#12213B"/><path d="M237.0 79.0 Q242 84.0 247.0 79.0" fill="none" stroke="#12213B" stroke-width="1.6" stroke-linecap="round"/><path d="M104 96 Q160 70 216 96" fill="none" stroke="#E8A33D" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"/><circle cx="160" cy="84" r="34" fill="#fff"/><circle cx="160" cy="84" r="27" fill="none" stroke="#EEF1F6" stroke-width="7"/><circle cx="160" cy="84" r="27" fill="none" stroke="#2F6F6B" stroke-width="7" stroke-linecap="round" stroke-dasharray="156 170" transform="rotate(-90 160 84)"/><text x="160" y="90" text-anchor="middle" font-family="Fraunces,serif" font-weight="700" font-size="19" fill="#12213B">92%</text><rect x="110" y="146" width="100" height="5" rx="2.5" fill="#fff"/><rect x="110" y="146" width="70" height="5" rx="2.5" fill="#2F6F6B"/><rect x="110" y="155" width="100" height="5" rx="2.5" fill="#fff"/><rect x="110" y="155" width="90" height="5" rx="2.5" fill="#2F6F6B"/><rect x="110" y="164" width="100" height="5" rx="2.5" fill="#fff"/><rect x="110" y="164" width="52" height="5" rx="2.5" fill="#E8A33D"/></svg></div><h3>Compatibility score</h3><p>Every person gets a score, plus the reasons. Sleep, food, work-from-home and cleanliness are shown separately, so nothing catches you off guard.</p></div>
+      <div class="feat rv"><div class="fimg"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect width="320" height="180" fill="#FFF3DF"/><rect y="150" width="320" height="30" fill="#E8D9B8"/><rect x="96" y="22" width="128" height="132" rx="6" fill="#12213B"/><rect x="88" y="18" width="144" height="10" rx="4" fill="#33456B"/><rect x="110" y="40" width="24" height="20" rx="3" fill="#E8A33D"/><rect x="146" y="40" width="24" height="20" rx="3" fill="#46598a"/><rect x="182" y="40" width="24" height="20" rx="3" fill="#E8A33D"/><rect x="110" y="70" width="24" height="20" rx="3" fill="#46598a"/><rect x="146" y="70" width="24" height="20" rx="3" fill="#E8A33D"/><rect x="182" y="70" width="24" height="20" rx="3" fill="#46598a"/><rect x="110" y="100" width="24" height="20" rx="3" fill="#E8A33D"/><rect x="146" y="100" width="24" height="20" rx="3" fill="#46598a"/><rect x="182" y="100" width="24" height="20" rx="3" fill="#E8A33D"/><rect x="148" y="124" width="24" height="30" rx="4" fill="#2F6F6B"/><circle cx="166" cy="140" r="2" fill="#E8A33D"/><rect x="232" y="64" width="2" height="30" fill="#33456B"/><rect x="232" y="64" width="62" height="34" rx="6" fill="#fff"/><text x="263" y="86" text-anchor="middle" font-family="Public Sans,sans-serif" font-weight="800" font-size="13" fill="#2F6F6B">₹12k</text><rect x="30" y="112" width="22" height="42" rx="4" fill="#E06B54"/><ellipse cx="41" cy="100" rx="14" ry="20" fill="#2F6F6B"/></svg></div><h3>Rooms &amp; PGs</h3><p>Flat shares and PGs with the details that matter: Wi-Fi, AC, meals, lift. Filter by rent, or by how far it is from your office.</p></div>
+      <div class="feat rv"><div class="fimg"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect width="320" height="180" fill="#E4EFEE"/><rect x="196" y="18" width="92" height="56" rx="10" fill="#CFE6D2"/><path d="M0 120 q70 -30 140 -4 t180 -22 V180 H0 Z" fill="#BFE0F0" opacity=".7"/><g stroke="#fff" stroke-linecap="round" fill="none"><path d="M-10 60 L330 90" stroke-width="12"/><path d="M110 -10 L150 190" stroke-width="12"/><path d="M250 -10 L214 190" stroke-width="8"/></g><path d="M72 118 Q130 108 138 84 T214 58" fill="none" stroke="#C8811F" stroke-width="4" stroke-dasharray="1 8" stroke-linecap="round"/><g transform="translate(214 58)"><path d="M0 -4 C-16 -26 -22 -34 -22 -42 a22 22 0 1 1 44 0 C22 -34 16 -26 0 -4 Z" fill="#E8A33D"/><circle cx="0" cy="-42" r="8" fill="#fff"/></g><g transform="translate(72 118)"><rect x="-12" y="-30" width="24" height="30" rx="4" fill="#12213B"/><rect x="-7" y="-25" width="5" height="5" fill="#E8A33D"/><rect x="2" y="-25" width="5" height="5" fill="#E8A33D"/><rect x="-7" y="-16" width="5" height="5" fill="#E8A33D"/><rect x="2" y="-16" width="5" height="5" fill="#46598a"/></g><rect x="16" y="140" width="92" height="26" rx="13" fill="#fff"/><text x="62" y="158" text-anchor="middle" font-family="Public Sans,sans-serif" font-weight="700" font-size="11.5" fill="#2F6F6B">1.2 km away</text></svg></div><h3>Map-pinned locations</h3><p>Hosts drop an exact pin. You see how far the room is from your office or college before you ever go and visit.</p></div>
+      <div class="feat rv"><div class="fimg"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect width="320" height="180" fill="#EEF1F6"/><circle cx="38" cy="50" r="16" fill="#F2C9A0"/><ellipse cx="38" cy="45" rx="17" ry="13" fill="#2B2B3A"/><ellipse cx="38" cy="52" rx="13" ry="13" fill="#F2C9A0"/><rect x="64" y="28" width="150" height="46" rx="16" fill="#fff"/><rect x="78" y="42" width="100" height="6" rx="3" fill="#D5DBE6"/><rect x="78" y="55" width="62" height="6" rx="3" fill="#D5DBE6"/><rect x="102" y="88" width="152" height="40" rx="16" fill="#12213B"/><rect x="116" y="101" width="96" height="6" rx="3" fill="#46598a"/><rect x="116" y="112" width="54" height="6" rx="3" fill="#46598a"/><circle cx="284" cy="108" r="16" fill="#8D5A3B"/><ellipse cx="284" cy="102" rx="18" ry="15" fill="#2B2B3A"/><ellipse cx="284" cy="110" rx="13" ry="13" fill="#8D5A3B"/><rect x="64" y="140" width="100" height="26" rx="13" fill="#fff"/><circle cx="84" cy="153" r="3.5" fill="#E8A33D"/><circle cx="96" cy="153" r="3.5" fill="#E8A33D" opacity=".7"/><circle cx="108" cy="153" r="3.5" fill="#E8A33D" opacity=".4"/><circle cx="38" cy="153" r="14" fill="#2F6F6B"/><path d="M31 153 l5 5 l9 -10" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Built-in chat</h3><p>Talk to matches and hosts on RoomSetu. Your phone number stays with you until you decide to share it.</p></div>
+      <div class="feat rv"><div class="fimg"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect width="320" height="180" fill="#FFF3DF"/><rect x="60" y="22" width="200" height="140" rx="14" fill="#fff"/><text x="80" y="48" font-family="Fraunces,serif" font-weight="700" font-size="14" fill="#12213B">Move-in list</text><rect x="80" y="62" width="16" height="16" rx="5" fill="#2F6F6B" stroke="#2F6F6B" stroke-width="2"/><path d="M84 70 l4 4 l6 -8" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><rect x="106" y="67" width="110" height="6" rx="3" fill="#B9C2D4"/><rect x="80" y="86" width="16" height="16" rx="5" fill="#2F6F6B" stroke="#2F6F6B" stroke-width="2"/><path d="M84 94 l4 4 l6 -8" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><rect x="106" y="91" width="84" height="6" rx="3" fill="#B9C2D4"/><rect x="80" y="110" width="16" height="16" rx="5" fill="#fff" stroke="#D5DBE6" stroke-width="2"/><rect x="106" y="115" width="96" height="6" rx="3" fill="#D5DBE6"/><rect x="80" y="138" width="160" height="10" rx="5" fill="#EEF1F6"/><rect x="80" y="138" width="84" height="10" rx="5" fill="#E8A33D"/><rect x="164" y="138" width="76" height="10" rx="5" fill="#2F6F6B"/><circle cx="262" cy="144" r="22" fill="#E8A33D"/><text x="262" y="152" text-anchor="middle" font-family="Public Sans,sans-serif" font-weight="800" font-size="22" fill="#12213B">₹</text></svg></div><h3>Household tools</h3><p>A shared move-in checklist and a running balance of who owes what. Fewer awkward conversations.</p></div>
+      <div class="feat rv"><div class="fimg"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect width="320" height="180" fill="#E4EFEE"/><path d="M160 22 L216 42 V86 C216 120 192 144 160 158 C128 144 104 120 104 86 V42 Z" fill="#2F6F6B"/><path d="M160 34 L205 50 V86 C205 112 186 133 160 146 Z" fill="#3C8580"/><path d="M136 90 l16 16 l32 -36" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><g><circle cx="60" cy="60" r="24" fill="#fff"/><rect x="50" y="46" width="20" height="28" rx="5" fill="#12213B"/><circle cx="60" cy="68" r="2" fill="#E8A33D"/><circle cx="76" cy="44" r="9" fill="#E8A33D"/><path d="M72 44 l3 3 l5 -6" fill="none" stroke="#12213B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></g><g><circle cx="262" cy="118" r="24" fill="#fff"/><rect x="250" y="109" width="24" height="18" rx="3" fill="#E8A33D"/><path d="M250 112 l12 8 l12 -8" fill="none" stroke="#12213B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="276" cy="100" r="9" fill="#2F6F6B"/><path d="M272 100 l3 3 l5 -6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></g></svg></div><h3>Block &amp; stay safe</h3><p>Block anyone, delete a chat from your side, report a listing that looks off.</p></div>
     </div>
   </div>
 </section>
@@ -531,14 +531,14 @@ footer .logo-mark{width:32px; height:32px; filter:none;}
     <div class="rv">
       <span class="eyebrow mono">Trust &amp; safety</span>
       <h2>Know who you're talking to.</h2>
-      <p>Every profile shows a trust score built from real verification, so you can tell a real person from a throwaway account.</p>
+      <p>Every profile has a trust score built from real checks, so you can tell a real person from a fake one.</p>
       <ul class="ticks">
         <li>Phone-number verification for every account</li>
         <li>Work or college email badge, personal Gmail doesn't count</li>
         <li>Public profiles with reviews from past flatmates</li>
         <li>Listings are reviewed and can be flagged or removed</li>
       </ul>
-      <a class="btn btn-dark" href="https://roomsetu-w8iu.onrender.com/app/">Create a trusted profile →</a>
+      <a class="btn btn-dark" href="app/">Create a trusted profile →</a>
     </div>
     <div class="split-media rv">
       <div class="trustbox">
@@ -571,14 +571,14 @@ footer .logo-mark{width:32px; height:32px; filter:none;}
     <div class="rv">
       <span class="eyebrow mono">For hosts</span>
       <h2>Fill your spare room with the right person.</h2>
-      <p>List a room or PG in minutes, then get inquiries from seekers whose lifestyle matches your home.</p>
+      <p>Put up a room or PG in a few minutes. Get inquiries from people whose routine actually fits your home.</p>
       <ul class="ticks">
         <li>Add photos, rent, features and an exact map pin</li>
         <li>Receive and reply to inquiries in one place</li>
         <li>Mark as rented to hide it from search, reopen anytime</li>
         <li>Edit or remove your listing whenever you like</li>
       </ul>
-      <a class="btn btn-dark" href="https://roomsetu-w8iu.onrender.com/app/">List your room →</a>
+      <a class="btn btn-dark" href="app/">List your room →</a>
     </div>
   </div>
 </section>
@@ -604,10 +604,10 @@ footer .logo-mark{width:32px; height:32px; filter:none;}
 <!-- FINAL CTA -->
 <div class="final">
   <div class="wrap rv">
-    <h2>Your next flatmate is a <em>good match</em> away.</h2>
-    <p>Create your profile in a minute and see who fits how you live.</p>
+    <h2>Find a flatmate you'll <em>actually like</em>.</h2>
+    <p>Make a profile, see who fits, and chat before you commit to anything.</p>
     <div class="cta-row">
-      <a class="btn btn-saffron" href="https://roomsetu-w8iu.onrender.com/app/">Get started free →</a>
+      <a class="btn btn-saffron" href="app/">Get started free →</a>
     </div>
   </div>
 </div>
@@ -616,7 +616,7 @@ footer .logo-mark{width:32px; height:32px; filter:none;}
 
 <div class="sticky-cta" id="sticky-cta" aria-hidden="true">
   <span>Find your flatmate</span>
-  <a class="btn btn-saffron" href="https://roomsetu-w8iu.onrender.com/app" tabindex="-1">Get started →</a>
+  <a class="btn btn-saffron" href="app/" tabindex="-1">Get started →</a>
 </div>
 
 <footer>
@@ -626,7 +626,7 @@ footer .logo-mark{width:32px; height:32px; filter:none;}
       <a href="#how">How it works</a>
       <a href="#features">Features</a>
       <a href="#faq">FAQ</a>
-      <a href="mailto:roomsetu.official@gmail.com">Contact</a>
+      <a href="mailto:hello@roomsetu.in">Contact</a>
       <a href="privacy.html">Privacy</a>
       <a href="terms.html">Terms</a>
     </nav>

@@ -1,0 +1,13 @@
+{
+  "name": "RoomSetu",
+  "short_name": "RoomSetu",
+  "description": "Find flatmates who live the way you do.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#FFFDF9",
+  "theme_color": "#12213B",
+  "icons": [
+    { "src": "logo/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "logo/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
